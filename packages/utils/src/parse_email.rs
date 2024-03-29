@@ -122,7 +122,9 @@ pub fn parse_email_node(mut cx: FunctionContext) -> JsResult<JsPromise> {
                     let public_key_str = parsed_email.public_key_string();
                     let obj = cx.empty_object();
                     let canonicalized_header = cx.string(parsed_email.canonicalized_header);
+                    let canonicalized_body = cx.string(parsed_email.canonicalized_body);
                     obj.set(&mut cx, "canonicalizedHeader", canonicalized_header)?;
+                    obj.set(&mut cx, "canonicalizedBody", canonicalized_body)?;
                     // let signed_header = cx.string(
                     //     "0x".to_string() + hex::encode(parsed_email.signed_header).as_str(),
                     // );
