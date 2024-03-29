@@ -1,32 +1,24 @@
 import fs from "fs";
 import { promisify } from "util";
 import { generateCircuitInputs } from "@zk-email/helpers/dist/input-helpers";
-const emailWalletUtils = require("../../utils");
+import { verifyDKIMSignature } from "@zk-email/helpers/dist/dkim";
 
-
-export async function genTxAuthInputs(emailFilePath: string):
-  Promise<{
-    in_padded: string[],
-    pubkey: string[],
-    signature: string[],
-    in_padded_len: string
-  }> {
+export async function genTxAuthInputs(emailFilePath: string) {
   const emailRaw = await promisify(fs.readFile)(emailFilePath, "utf8");
-  const parsedEmail = await emailWalletUtils.parseEmail(emailRaw);
+  const dkimResult = await verifyDKIMSignature(Buffer.from(emailRaw));
   const emailCircuitInputs = generateCircuitInputs({
-    rsaSignature: BigInt(parsedEmail.signature),
-    rsaPublicKey: BigInt(parsedEmail.publicKey),
-    body: Buffer.from(""),
-    bodyHash: "",
-    message: Buffer.from(parsedEmail.canonicalizedHeader),
+    rsaSignature: dkimResult.signature,
+    rsaPublicKey: dkimResult.publicKey,
+    body: dkimResult.body,
+    bodyHash: dkimResult.bodyHash,
+    message: dkimResult.message,
     maxMessageLength: 1024,
     maxBodyLength: 64
   });
 
-  return {
-    in_padded: emailCircuitInputs.in_padded,
-    pubkey: emailCircuitInputs.pubkey,
-    signature: emailCircuitInputs.signature,
-    in_padded_len: emailCircuitInputs.in_len_padded_bytes
-  };
+  const inputs = {
+    ...emailCircuitInputs
+  }
+
+  return inputs;
 }
