@@ -22,7 +22,6 @@ describe("Email Sender", () => {
         console.log(parsedEmail.canonicalizedHeader);
         const relayerRand = emailWalletUtils.genRelayerRand();
         const circuitInputs = await genEmailSenderInput(emailFilePath, relayerRand);
-        const circuit = await wasm_tester(path.join(__dirname, "../src/email_sender.circom"), option);
         const witness = await circuit.calculateWitness(circuitInputs);
         await circuit.checkConstraints(witness);
         const maskedSubject = "Send 0.1 ETH to ";

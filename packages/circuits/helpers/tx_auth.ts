@@ -3,10 +3,21 @@ import { promisify } from "util";
 import { generateCircuitInputs } from "@zk-email/helpers/dist/input-helpers";
 import { verifyDKIMSignature } from "@zk-email/helpers/dist/dkim";
 
-export async function genTxAuthInputs(emailFilePath: string) {
+export type TxAuthCircuitInput = {
+  in_padded: string[];
+  pubkey: string[];
+  signature: string[];
+  in_len_padded_bytes: string;
+  precomputed_sha?: string[];
+  in_body_padded?: string[];
+  in_body_len_padded_bytes?: string;
+  body_hash_idx?: string;
+}
+
+export async function genTxAuthInputs(emailFilePath: string): Promise<TxAuthCircuitInput> {
   
   const max_message_length = 1024;
-  const max_body_length = 512;
+  const max_body_length = 1024;
 
   const emailRaw = await promisify(fs.readFile)(emailFilePath, "utf8");
   const dkimResult = await verifyDKIMSignature(Buffer.from(emailRaw));
@@ -20,9 +31,5 @@ export async function genTxAuthInputs(emailFilePath: string) {
     maxBodyLength: max_body_length
   });
 
-  const inputs = {
-    ...emailCircuitInputs
-  }
-
-  return inputs;
+  return emailCircuitInputs;
 }

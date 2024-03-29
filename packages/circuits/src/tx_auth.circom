@@ -23,92 +23,35 @@ include "@zk-email/zk-regex-circom/circuits/common/timestamp_regex.circom";
 // * n - the number of bits in each chunk of the RSA public key (modulust)
 // * k - the number of chunks in the RSA public key (n * k > 2048)
 // * max_header_bytes - max number of bytes in the email header
-// * max_subject_bytes - max number of bytes in the email subject
-template TransactionAuth(n, k, max_header_bytes, max_body_bytes, max_subject_bytes) {
-    signal input in_padded[max_header_bytes]; // email data (only header part)
-    signal input in_body_padded[max_body_bytes]; // email data (only body part)
+// * max_body_bytes - max number of bytes in the email subject
+template TransactionAuth(n, k, max_header_bytes, max_body_bytes) {
+    // header inputs
+    signal input in_padded[max_header_bytes];
+    signal input in_len_padded_bytes;
+    signal input pubkey[k];
+    signal input signature[k];
     
-    signal input pubkey[k]; // RSA pubkey (modulus), k parts of n bits each.
-    signal input signature[k]; // RSA signature, k parts of n bits each.
-    signal input in_padded_len; // length of in email data including the padding
-    signal input sender_email_idx; // Index of the from email address (= sender email address) in the email header
-    signal input recipient_email_idx; // Index of the recipient email address in the subject
-    signal input domain_idx; // Index of the domain name in the from email address
-    signal input timestamp_idx; // Index of the timestamp in the header
+    // body inputs
+    signal input in_body_padded[max_body_bytes];
+    signal input in_body_len_padded_bytes;
+    signal input body_hash_idx;
+    signal input precomputed_sha[32];
 
-    var email_max_bytes = email_max_bytes_const();
-    var subject_field_len = compute_ints_size(max_subject_bytes);
-    var domain_len = domain_len_const();
-    var domain_filed_len = compute_ints_size(domain_len);
-    var k2_chunked_size = k >> 1;
-    if(k % 2 == 1) {
-        k2_chunked_size += 1;
-    }
-    var timestamp_len = timestamp_len_const();
-
-    signal output domain_name[domain_filed_len];
+    // output
     signal output pubkey_hash;
-    signal output email_nullifier;
-    signal output sender_pointer;
-    signal output recipient_email_addr_commit;
-    signal output timestamp;
+
+    // verify email signature
+    component EV = EmailVerifier(max_header_bytes, max_body_bytes, n, k, 0);
+    EV.in_padded <== in_padded;
+    EV.pubkey <== pubkey;
+    EV.signature <== signature;
+    EV.in_len_padded_bytes <== in_len_padded_bytes;
+    EV.body_hash_idx <== body_hash_idx;
+    EV.precomputed_sha <== precomputed_sha;
+    EV.in_body_padded <== in_body_padded;
+    EV.in_body_len_padded_bytes <== in_body_len_padded_bytes;
     
-    // Verify Email Signature
-    component email_verifier = EmailVerifier(max_header_bytes, 0, n, k, 1);
-    email_verifier.in_padded <== in_padded;
-    email_verifier.pubkey <== pubkey;
-    email_verifier.signature <== signature;
-    email_verifier.in_len_padded_bytes <== in_padded_len;
-    signal header_hash[256] <== email_verifier.sha;
-    pubkey_hash <== email_verifier.pubkey_hash;
-
-    // FROM HEADER REGEX
-    signal from_regex_out, from_regex_reveal[max_header_bytes];
-    (from_regex_out, from_regex_reveal) <== FromAddrRegex(max_header_bytes)(in_padded);
-    from_regex_out === 1;
-    signal sender_email_addr[email_max_bytes];
-    sender_email_addr <== VarShiftMaskedStr(max_header_bytes, email_max_bytes)(from_regex_reveal, sender_email_idx);
-
-    // DOMAIN NAME HEADER REGEX
-    signal domain_regex_out, domain_regex_reveal[email_max_bytes];
-    (domain_regex_out, domain_regex_reveal) <== EmailDomainRegex(email_max_bytes)(sender_email_addr);
-    domain_regex_out === 1;
-    signal domain_name_bytes[domain_len];
-    domain_name_bytes <== VarShiftMaskedStr(email_max_bytes, domain_len)(domain_regex_reveal, domain_idx);
-    domain_name <== Bytes2Ints(domain_len)(domain_name_bytes);
-    
-    // Relayer randHash
-    signal sign_hash;
-    signal sign_ints[k2_chunked_size];
-    (sign_hash, sign_ints) <== HashSign(n,k)(signature);
-    sender_relayer_rand_hash <== Poseidon(1)([sender_relayer_rand]);
-
-    email_nullifier <== EmailNullifier()(sign_hash);
-
-    // Email address pointer
-    var num_email_addr_ints = compute_ints_size(email_max_bytes);
-    signal sender_email_addr_ints[num_email_addr_ints] <== Bytes2Ints(email_max_bytes)(sender_email_addr);
-    sender_pointer <== EmailAddrPointer(num_email_addr_ints)(sender_relayer_rand, sender_email_addr_ints);
-
-    // Email address commitment
-    signal cm_rand_input[k2_chunked_size+1];
-    for(var i=0; i<k2_chunked_size;i++){
-        cm_rand_input[i] <== sign_ints[i];
-    }
-    cm_rand_input[k2_chunked_size] <== 1;
-    signal cm_rand <== Poseidon(k2_chunked_size+1)(cm_rand_input);
-    signal recipient_email_addr_ints[num_email_addr_ints] <== Bytes2Ints(email_max_bytes)(recipient_email_addr);
-    signal recipient_email_addr_commit_raw;
-    recipient_email_addr_commit_raw <== EmailAddrCommit(num_email_addr_ints)(cm_rand, recipient_email_addr_ints);
-    recipient_email_addr_commit <== has_email_recipient * recipient_email_addr_commit_raw;
-
-    // Timestamp regex + convert to decimal format
-    signal timestamp_regex_out, timestamp_regex_reveal[max_header_bytes];
-    (timestamp_regex_out, timestamp_regex_reveal) <== TimestampRegex(max_header_bytes)(in_padded);
-    timestamp_regex_out === 1;
-    signal timestamp_str[timestamp_len];
-    timestamp_str <== VarShiftMaskedStr(max_header_bytes, timestamp_len)(timestamp_regex_reveal, timestamp_idx);
-    timestamp <== Digit2Int(timestamp_len)(timestamp_str);
+    pubkey_hash <== EV.pubkey_hash;
 }
 
 // Args:
@@ -116,4 +59,4 @@ template TransactionAuth(n, k, max_header_bytes, max_body_bytes, max_subject_byt
 // * k = 17 is the number of chunks in the modulus (RSA parameter)
 // * max_header_bytes = 1024 is the max number of bytes in the header
 // * max_subject_bytes = 512 is the max number of bytes in the body after precomputed slice
-component main  = EmailSender(121, 17, 1024, 512);
+component main  = TransactionAuth(121, 17, 1024, 1024);

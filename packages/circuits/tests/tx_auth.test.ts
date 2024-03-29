@@ -1,5 +1,5 @@
 const utils = require("../../utils");
-const ff = require('ffjavascript');
+const ff = require("ffjavascript");
 const stringifyBigInts = ff.utils.stringifyBigInts;
 const circom_tester = require("circom_tester");
 const wasm_tester = circom_tester.wasm;
@@ -8,17 +8,32 @@ const p = "218882428718392752222464057452572750885483644004160343436982041865758
 const field = new ff.F1Field(p);
 const emailWalletUtils = require("../../utils");
 const option = {
-    include: path.join(__dirname, "../../../node_modules")
+  include: path.join(__dirname, "../../../node_modules"),
 };
 import { readFileSync } from "fs";
-import { genTxAuthInputs } from "../helpers/tx_auth";
+import { TxAuthCircuitInput, genTxAuthInputs } from "../helpers/tx_auth";
 
 jest.setTimeout(1440000);
 describe("Tx Auth", () => {
-    it("should parse email", async () => {
-        const emailFilePath = path.join(__dirname, "./emails/email_sender_test1.eml");
-        const inputs = await genTxAuthInputs(emailFilePath)
+  const emailFilePath = path.join(__dirname, "./emails/email_tx_test1.eml");
+  let circuitInputs: TxAuthCircuitInput;
+  let circuit: {
+    checkConstraints(witness: any): unknown;
+    calculateWitness: (arg0: any) => any;
+  };
+  let witness: any;
 
-        console.log("inputs", inputs)
-    });
+  beforeAll(async () => {
+    circuitInputs = await genTxAuthInputs(emailFilePath);
+    circuit = await wasm_tester(path.join(__dirname, "../src/tx_auth.circom"), option);
+    witness = await circuit.calculateWitness(stringifyBigInts(circuitInputs));
+  });
+
+  it("should have parsed email into circuit inputs", async () => {
+    expect(circuitInputs).toBeDefined();
+  });
+
+  it("should verify DKIM signature", async () => {
+    await circuit.checkConstraints(witness);
+  });
 });
