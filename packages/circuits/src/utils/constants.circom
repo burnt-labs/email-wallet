@@ -4,6 +4,10 @@ function email_max_bytes_const() {
     return 256;
 }
 
+function email_salt_max_bytes_const() {
+    return 31;
+}
+
 function domain_len_const() {
     return 255;
 }

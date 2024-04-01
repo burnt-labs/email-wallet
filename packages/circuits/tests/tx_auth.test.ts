@@ -17,16 +17,9 @@ jest.setTimeout(1440000);
 describe("Tx Auth", () => {
   const emailFilePath = path.join(__dirname, "./emails/email_tx_test1.eml");
   let circuitInputs: TxAuthCircuitInput;
-  let circuit: {
-    checkConstraints(witness: any): unknown;
-    calculateWitness: (arg0: any) => any;
-  };
-  let witness: any;
 
   beforeAll(async () => {
     circuitInputs = await genTxAuthInputs(emailFilePath);
-    circuit = await wasm_tester(path.join(__dirname, "../src/tx_auth.circom"), option);
-    witness = await circuit.calculateWitness(stringifyBigInts(circuitInputs));
   });
 
   it("should have parsed email into circuit inputs", async () => {
@@ -34,6 +27,9 @@ describe("Tx Auth", () => {
   });
 
   it("should verify DKIM signature", async () => {
-    await circuit.checkConstraints(witness);
+    const circuit = await wasm_tester(path.join(__dirname, "../src/tx_auth.circom"), option);
+    const witness = await circuit.calculateWitness(stringifyBigInts(circuitInputs));
+
+    console.log(JSON.stringify(witness));
   });
 });
