@@ -39,5 +39,4 @@ template TxBodyCommit(num_tx_body_ints) {
     }
 
     tx_body_hash <== _tx_body_hash;
-
 }
