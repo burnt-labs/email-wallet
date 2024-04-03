@@ -7,7 +7,8 @@ use rand_core::{OsRng, RngCore};
 pub use zk_regex_apis::padding::{pad_string, pad_string_node};
 
 pub const MAX_EMAIL_ADDR_BYTES: usize = 256;
-pub const MAX_SALT_BYTES: usize = 31;
+pub const MAX_FIELD_BYTES: usize = 31;
+pub const MAX_TX_DATA_BYTES: usize = 1024;
 
 #[derive(Debug, Clone, Copy)]
 pub struct RelayerRand(pub Fr);
@@ -208,7 +209,7 @@ pub fn email_salt_addr_commit_node(mut cx: FunctionContext) -> JsResult<JsString
     let email_addr = cx.argument::<JsString>(0)?.value(&mut cx);
     let email_addr = pad_string(&email_addr, MAX_EMAIL_ADDR_BYTES);
     let salt = cx.argument::<JsString>(1)?.value(&mut cx);
-    let salt = pad_string(&salt, MAX_SALT_BYTES);
+    let salt = pad_string(&salt, MAX_FIELD_BYTES);
     let input_bytes = [&salt[..], &email_addr].concat();
 
     // poseidon bytes hash of salt + email_addr
@@ -218,6 +219,31 @@ pub fn email_salt_addr_commit_node(mut cx: FunctionContext) -> JsResult<JsString
     };
     let email_addr_commit_str = field2hex(&email_addr_commit);
     Ok(cx.string(email_addr_commit_str))
+}
+
+pub fn tx_data_commit_node(mut cx: FunctionContext) -> JsResult<JsString> {
+    let tx_data = cx.argument::<JsString>(0)?.value(&mut cx);
+    let tx_data = pad_string(&tx_data, MAX_TX_DATA_BYTES);
+
+    let mut tx_data_commit = Fr::zero();
+
+    for (idx, chunk) in bytes2fields(&tx_data).chunks(16).enumerate() {
+        let chunk_hash = match poseidon_fields(chunk) {
+            Ok(fr) => fr,
+            Err(e) => return cx.throw_error(&format!("TxDataCommit failed: {}", e)),
+        };
+        if idx == 0 {
+            tx_data_commit = chunk_hash;
+        } else {
+            tx_data_commit = match poseidon_fields(&[tx_data_commit, chunk_hash]) {
+                Ok(fr) => fr,
+                Err(e) => return cx.throw_error(&format!("TxDataCommit failed: {}", e)),
+            };
+        }
+    }
+
+    let tx_data_commit_str = field2hex(&tx_data_commit);
+    Ok(cx.string(tx_data_commit_str))
 }
 
 pub fn email_addr_commit_node(mut cx: FunctionContext) -> JsResult<JsString> {
