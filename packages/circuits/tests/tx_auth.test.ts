@@ -1,4 +1,3 @@
-const utils = require("../../utils");
 const ff = require("ffjavascript");
 const stringifyBigInts = ff.utils.stringifyBigInts;
 const circom_tester = require("circom_tester");
@@ -36,6 +35,11 @@ describe("Tx Auth", () => {
     const emailSalt = await getEmailSalt(rawEmail);
     const expectedEmailSaltCommitment = BigInt(await emailWalletUtils.emailSaltCommit(sender, emailSalt));
     expect(witness[2]).toEqual(expectedEmailSaltCommitment);
+
+    // check tx data commitment
+    const txData = await getTxData(rawEmail);
+    const expectedTxDataCommitment = BigInt(await emailWalletUtils.txDataCommit(txData));
+    expect(witness[1]).toEqual(expectedTxDataCommitment);
   });
 
   // helper functions tests
