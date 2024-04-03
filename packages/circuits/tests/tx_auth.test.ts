@@ -11,11 +11,12 @@ const option = {
   include: path.join(__dirname, "../../../node_modules"),
 };
 import { readFileSync } from "fs";
-import { TxAuthCircuitInput, genTxAuthInputs } from "../helpers/tx_auth";
+import { TxAuthCircuitInput, genTxAuthInputs, getEmailSalt, getEmailSender, getTxData } from "../helpers/tx_auth";
 
 jest.setTimeout(1440000);
 describe("Tx Auth", () => {
   const emailFilePath = path.join(__dirname, "./emails/email_tx_test1.eml");
+  const rawEmail = readFileSync(emailFilePath, "utf8");
   let circuitInputs: TxAuthCircuitInput;
 
   beforeAll(async () => {
@@ -26,10 +27,35 @@ describe("Tx Auth", () => {
     expect(circuitInputs).toBeDefined();
   });
 
-  it("should verify DKIM signature", async () => {
+  it("should verify circuit outputs", async () => {
     const circuit = await wasm_tester(path.join(__dirname, "../src/tx_auth.circom"), option);
     const witness = await circuit.calculateWitness(stringifyBigInts(circuitInputs));
 
-    console.log(JSON.stringify(witness));
+    // check email commitment
+    const sender = await getEmailSender(rawEmail);
+    const emailSalt = await getEmailSalt(rawEmail);
+    const expectedEmailSaltCommitment = BigInt(await emailWalletUtils.emailSaltCommit(sender, emailSalt));
+    expect(witness[2]).toEqual(expectedEmailSaltCommitment);
+  });
+
+  // helper functions tests
+
+  it("should get email salt", async () => {
+    const expectedSalt = "XRhMS5Nc2dTZW5kEpAB";
+    const emailSalt = await getEmailSalt(rawEmail);
+    expect(emailSalt).toEqual(expectedSalt);
+  });
+
+  it("should get tx data", async () => {
+    const expectedTxData =
+      "CrQBCrEBChwvY29zbW9zLmJhbmsudjFiZXRhMS5Nc2dTZW5kEpABCj94aW9uMWd2cDl5djZndDBwcmdzc3ZueWNudXpnZWszZmtyeGxsZnhxaG0wNzYwMmt4Zmc4dXI2NHNuMnAycDkSP3hpb24xNGNuMG40ZjM4ODJzZ3B2NWQ5ZzA2dzNxN3hzZm51N3B1enltZDk5ZTM3ZHAwemQ4bTZscXpwemwwbRoMCgV1eGlvbhIDMTAwEmEKTQpDCh0vYWJzdHJhY3RhY2NvdW50LnYxLk5pbFB1YktleRIiCiBDAlIzSFvCNEIMmTE+CRm0U2Gb/0mBfb/aeqxkoPweqxIECgIIARh/EhAKCgoFdXhpb24SATAQwJoMGg54aW9uLXRlc3RuZXQtMSCLjAo=";
+    const txData = await getTxData(rawEmail);
+    expect(txData).toEqual(expectedTxData);
+  });
+
+  it("should get email sender", async () => {
+    const expectedSender = "thezdev1@gmail.com";
+    const sender = await getEmailSender(rawEmail);
+    expect(sender).toEqual(expectedSender);
   });
 });

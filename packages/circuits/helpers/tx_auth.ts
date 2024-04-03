@@ -2,6 +2,12 @@ import fs from "fs";
 import { promisify } from "util";
 import { generateCircuitInputs } from "@zk-email/helpers/dist/input-helpers";
 import { verifyDKIMSignature } from "@zk-email/helpers/dist/dkim";
+const emailWalletUtils = require("../../utils");
+
+export const SENDER_ADDRESS_MAX_BYTES = 256;
+export const EMAIL_SALT_MAX_BYTES = 31;
+export const EMAIL_HEADER_MAX_BYTES = 1024;
+export const EMAIL_BODY_MAX_BYTES = 2048;
 
 export type TxAuthCircuitInput = {
   in_padded: string[];
@@ -37,9 +43,6 @@ export async function getEmailSender(rawEmail: string): Promise<string> {
 }
 
 export async function genTxAuthInputs(emailFilePath: string): Promise<TxAuthCircuitInput> {
-  const max_message_length = 1024;
-  const max_body_length = 2048;
-
   const emailRaw = await promisify(fs.readFile)(emailFilePath, "utf8");
   const dkimResult = await verifyDKIMSignature(Buffer.from(emailRaw));
   const emailCircuitInputs = generateCircuitInputs({
@@ -48,8 +51,8 @@ export async function genTxAuthInputs(emailFilePath: string): Promise<TxAuthCirc
     body: dkimResult.body,
     bodyHash: dkimResult.bodyHash,
     message: dkimResult.message,
-    maxMessageLength: max_message_length,
-    maxBodyLength: max_body_length,
+    maxMessageLength: EMAIL_HEADER_MAX_BYTES,
+    maxBodyLength: EMAIL_BODY_MAX_BYTES,
     ignoreBodyHashCheck: true,
   });
 
@@ -67,8 +70,6 @@ export async function genTxAuthInputs(emailFilePath: string): Promise<TxAuthCirc
   const selectorBuffer = Buffer.from("from:");
   let sender_email_idx = Buffer.from(data).indexOf(selectorBuffer) + selectorBuffer.length;
   sender_email_idx = Buffer.from(data).slice(sender_email_idx).indexOf(Buffer.from("<")) + sender_email_idx + 1;
-
-  console.log("sender_email_idx", sender_email_idx);
 
   return {
     ...emailCircuitInputs,
