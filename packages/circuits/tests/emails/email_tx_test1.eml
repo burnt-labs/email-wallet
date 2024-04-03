@@ -1,99 +1,61 @@
-Delivered-To: b@burnt.com
-Received: by 2002:a05:6214:16b:b0:696:82d5:f833 with SMTP id y11csp758391qvs;
-        Wed, 27 Mar 2024 16:43:57 -0700 (PDT)
-X-Received: by 2002:a05:600c:4f13:b0:414:8fa5:b9a1 with SMTP id l19-20020a05600c4f1300b004148fa5b9a1mr569892wmq.5.1711583036798;
-        Wed, 27 Mar 2024 16:43:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1711583036; cv=none;
-        d=google.com; s=arc-20160816;
-        b=wA8H4zg5T2k+yInnv3MSn5TZg9/fvR4P8UHBVaBvH0OJMEYGVT4qkGj3L1FZKHdnOc
-         KWSy/0hGbi1HrYw9IkE6BYtMdjOsk6Xn92WwB3nor9voMd9odtNxadxHXAmXiISOX8uA
-         2XyZVJfqb5hRNheAOvYKtr+v5zNz20jxZtrTtysHvZZOx8QNfd7tvDB9StCkQx8uqiWL
-         Q6iB07Xtu+BYEZjHw75Lw1DMZVo4g5CcR7usnC9/HyyHiYagJKZM+tuCqt/9GBgxRqI1
-         ppu7dVyAqCqnseZMbED+rfdibK+qpS3S6dpdCjHU8zD8SrZW6Nhm6ndYAA+dp/NLfWVn
-         AirA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
-        h=to:date:message-id:subject:mime-version:content-transfer-encoding
-         :from:dkim-signature;
-        bh=qz7kqzeVL6uXPZft6SPfsrZTvUlVdjGl8D2msUep3EI=;
-        fh=MfgNgGj1fuRb37W3aTXUk8EM+t6K+F6LNQOdL/y9oNQ=;
-        b=diew4nVlG/OqV2VEq3QQZLapD0PZcBbdEbBz85hSbzCHMZJzYAK3CWfqcfj8QVd5vd
-         LbPeFlU+igsyO/QZvti9S/0njhPfzTjW+wLOVoTsvfKUdKG0mhJAL+rVAttEK7MIZt0o
-         f900Y0epo6ooZ9iqjISsPrT1jdaRu/JWRz2WmOJY/Xoo1YM5JK1Kq3OUIxRrFCpRzlM6
-         geDDsmWc4thX2Y4zYLkLLQu/UHcIQ2cMSUBbAp5qq/j/BwthjGHQ8P4Aa55zKntP01+N
-         yr8SLnAcnB++TCQVgm6qfbEtBjG39EwLxG0dbsBKGbVGXwe8H6ujZhvcT6F2BYjkKw7f
-         7wHA==;
-        dara=google.com
-ARC-Authentication-Results: i=1; mx.google.com;
-       dkim=pass header.i=@burnt.com header.s=google header.b=iqX5yNe2;
-       spf=pass (google.com: domain of ash@burnt.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=ash@burnt.com;
-       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=burnt.com
-Return-Path: <ash@burnt.com>
-Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
-        by mx.google.com with SMTPS id bd16-20020a05600c1f1000b004147d14de67sor695970wmb.4.2024.03.27.16.43.56
-        for <b@burnt.com>
-        (Google Transport Security);
-        Wed, 27 Mar 2024 16:43:56 -0700 (PDT)
-Received-SPF: pass (google.com: domain of ash@burnt.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
-Authentication-Results: mx.google.com;
-       dkim=pass header.i=@burnt.com header.s=google header.b=iqX5yNe2;
-       spf=pass (google.com: domain of ash@burnt.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=ash@burnt.com;
-       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=burnt.com
+Authentication-Results: inbound-smtp.skiff.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=D0qlsSOa;
+	spf=pass (inbound-smtp.skiff.com: domain of thezdev1@gmail.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=thezdev1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+X-Spam-Action: no action
+X-Envelope-From: thezdev1@gmail.com
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	by inbound-smtp.skiff.com (Haraka) with ESMTPS id A1B73635-D137-4BCA-98EC-5E3F9FA93DC6.1
+	envelope-from <thezdev1@gmail.com>
+	tls TLS_AES_256_GCM_SHA384;
+	Wed, 03 Apr 2024 04:17:08 +0000
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-513e89d0816so6975660e87.0
+        for <zkemail@thedev.maskmy.id>; Tue, 02 Apr 2024 21:17:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=burnt.com; s=google; t=1711583035; x=1712187835; darn=burnt.com;
-        h=to:date:message-id:subject:mime-version:content-transfer-encoding
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qz7kqzeVL6uXPZft6SPfsrZTvUlVdjGl8D2msUep3EI=;
-        b=iqX5yNe2yrkDIXwR2OFbiN9UPwjt18SU0pDOUQ7DsBwZHukpVry6qyyq0lzyaxosDn
-         N0uwLMpmm90Ogp0wjfId8ISw98NWhUYr/TuPm+n/y5JtMEZ+5HiGhNhAR8S70A+BQ8wA
-         J3420MOn++HWevTq2ZFMd9RI1r1Lw8M26Jz7k=
+        d=gmail.com; s=20230601; t=1712117824; x=1712722624; darn=thedev.maskmy.id;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=m/jqa+zgMd9hOOMpr60ahQ6WrIsdqwX5stoXGnrKeFU=;
+        b=D0qlsSOanBtLKze61X+XSjdSx+bw52hUe2sMoXhk8ikWvHTppkM3xo20L9YHhvBzE8
+         MyJ/Tm4JM93V/UEaB9JgXQflVU2TqU0jzPJQSGlzUv0RfJsFHWdJej+j9DklNcoCopCd
+         uR/yn4oeHYegqvc+D96FGiHa23YDQMoOQ1TfBNbCvftRX6llKBulf1sgAxIG3gpDUK2o
+         XZRSIFd459ZQLZOID77lqDAEP4Y8Soi2atT6pygJ2EeG4f5w6OzpvHbRLL7fQX1H5O5l
+         UYgAW+x3f3eoRNwLaMj9NyRjpT30NxwqX+Hkm9CBb927LQeU9PDrB+b7TRTgt4ZN3M0T
+         auXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711583035; x=1712187835;
-        h=to:date:message-id:subject:mime-version:content-transfer-encoding
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qz7kqzeVL6uXPZft6SPfsrZTvUlVdjGl8D2msUep3EI=;
-        b=pwB9HQmUyQZOFjoD+ZP3ueXLmi5dtAazFfAEy4xYDTyOzWJDqCAGxeBgBDhQguIDaH
-         5lT7TuyQa9jbgBQNYJyR6Paj/QV7TJ7ja9hAGNTxzqTFz84Gv4jZ+lDu2xBL808c2If4
-         J8z5ibAK1q+839aa35H4K9eZDemvZgpT4AzyjOs3wPDgvQlhlv3ndYm8qcixyo6mWv1o
-         9x/1Gm4fpJA9G61vewsnQ1B3YsCg71RWcRfqKzVa00vpGYdGn4DTEcdhtWS0B1litPto
-         9YnWZnDBwZVkiYSAP2Tspk1wISx8asRDl9HSALeuZwj8szJ0vY53gjEEU/3R4Qnr3+14
-         J6SA==
-X-Gm-Message-State: AOJu0YxEODoD3kdk65iF3UAzsevtlmDU58YMi9KnGGrSDBPwyJKnv1Au
-	MMdEXqSy9+dBw7LERx9t/G302GrbojuNRRciQI9mRO1J23bi5xqoum9KB9+SiyqD6vXSh3C2xj0
-	MSngZe9cu
-X-Google-Smtp-Source: AGHT+IGCf/Vp4E+0cWDqgynA1Ndwln12SDh9osBFcxogyouV+HLsBjkCJWTgaMWwIp3aRtUn5irM0w==
-X-Received: by 2002:a05:600c:4f4e:b0:414:8849:947e with SMTP id m14-20020a05600c4f4e00b004148849947emr506863wmq.3.1711583035495;
-        Wed, 27 Mar 2024 16:43:55 -0700 (PDT)
-Return-Path: <ash@burnt.com>
-Received: from smtpclient.apple ([45.82.33.104])
-        by smtp.gmail.com with ESMTPSA id n7-20020a05600c500700b0041544e43878sm40094wmr.6.2024.03.27.16.43.54
-        for <b@burnt.com>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 27 Mar 2024 16:43:55 -0700 (PDT)
-From: Ash <ash@burnt.com>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
-Subject: <POSEIDON HASH OF TX BODY>
-Message-Id: <A0B4C54D-C465-4D00-8356-A068A457A769@burnt.com>
-Date: Wed, 27 Mar 2024 16:43:41 -0700
-To: Burnt Banksy <b@burnt.com>
-X-Mailer: Apple Mail (2.3774.400.31)
+        d=1e100.net; s=20230601; t=1712117824; x=1712722624;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=m/jqa+zgMd9hOOMpr60ahQ6WrIsdqwX5stoXGnrKeFU=;
+        b=Z4FjIQ37l9Hks04nZNd/ZVSS1U8cLYNPDW9h0rlnKYutSzAJkIjLVgCmMEciCjs/kH
+         /NCRdiRDGX+YbifAkqToGgYBj+9kCR/yVFq71C7YGxsMacJVvWM/o1FuadpRBtXNJ/ym
+         UK7vPzfS5Yno652VCskXrUbPFhP+RW4IRJbFzAWBn3gRIYA5VGLxqPxcklGhKh0qy/4Q
+         LZvYXZ4BChVeimvViq6vwjXOwzrxLjyNSKadhzI196Xd6MbtL5UDV5GzrihkQBGgOWTl
+         pC9TTOPtGSTwXUxpy5XvOevETKOnwTh7UaWV4hxjqon02GqSkt6ZT7Um4K5zjjoqOQzC
+         QeBA==
+X-Gm-Message-State: AOJu0YzAAa3BL2PcDWijbY355PkXphshEKgWh5ifbxBWlBPma3MJaYsp
+	fKPr2K0aSq2kCfkTULfN8kJyF55GbyYax6idJXL6Ws54dnb+S/PS4MMwdNjf0XarIDqQyL4Zoo4
+	dzxA6dzpUWcMIM07f0LrFydfdM7kyON/xr/4=
+X-Google-Smtp-Source: AGHT+IGoCLu93BdvAQpMRrQ3aYopgILe7JPxXr93bQd2b11n1tlcsVNixmXYZiWRKQQ1/I4mnf3mxzHAWlwunb7fvuw=
+X-Received: by 2002:ac2:4add:0:b0:513:b023:7608 with SMTP id
+ m29-20020ac24add000000b00513b0237608mr9057983lfp.8.1712117824048; Tue, 02 Apr
+ 2024 21:17:04 -0700 (PDT)
+MIME-Version: 1.0
+From: zdev <thezdev1@gmail.com>
+Date: Wed, 3 Apr 2024 06:16:53 +0200
+Message-ID: <CAPxFdS6gg3cb65uFC3zvXw6dSnLkPkeB+c2Uf+2cAi9YxrDKjg@mail.gmail.com>
+Subject: #CrQBCrEBChwvY29zbW9zLmJhbmsudjFiZXRhMS5Nc2dTZW5kEpABCj94aW9uMWd2cDl5djZndDBwcmdzc3ZueWNudXpnZWszZmtyeGxsZnhxaG0wNzYwMmt4Zmc4dXI2NHNuMnAycDkSP3hpb24xNGNuMG40ZjM4ODJzZ3B2NWQ5ZzA2dzNxN3hzZm51N3B1enltZDk5ZTM3ZHAwemQ4bTZscXpwemwwbRoMCgV1eGlvbhIDMTAwEmEKTQpDCh0vYWJzdHJhY3RhY2NvdW50LnYxLk5pbFB1YktleRIiCiBDAlIzSFvCNEIMmTE+CRm0U2Gb/0mBfb/aeqxkoPweqxIECgIIARh/EhAKCgoFdXhpb24SATAQwJoMGg54aW9uLXRlc3RuZXQtMSCLjAo=#XRhMS5Nc2dTZW5kEpAB#
+To: zkemail@thedev.maskmy.id
+Content-Type: multipart/alternative; boundary="000000000000b7599b0615297eec"
 
-###########TX##########
-Body Bytes: =
-CrEBChwvY29zbW9zLmJhbmsudjFiZXRhMS5Nc2dTZW5kEpABCj94aW9uMWd2cDl5djZndDBwcm=
-dzc3ZueWNudXpnZWszZmtyeGxsZnhxaG0wNzYwMmt4Zmc4dXI2NHNuMnAycDkSP3hpb24xNGNu=
-MG40ZjM4ODJzZ3B2NWQ5ZzA2dzNxN3hzZm51N3B1enltZDk5ZTM3ZHAwemQ4bTZscXpwemwwbR=
-oMCgV1eGlvbhIDMTAw
-Auth Bytes:=20
-=
-Ck0KQwodL2Fic3RyYWN0YWNjb3VudC52MS5OaWxQdWJLZXkSIgogQwJSM0hbwjRCDJkxPgkZtF=
-Nhm/9JgX2/2nqsZKD8HqsSBAoCCAEYahIQCgoKBXV4aW9uEgEwEMCaDA=3D=3D
-Chain ID:
-xion-testnet-1
-Account Number:
-165387
-Email Salt:
-Horseradish
-###########ENDTX##########=
+--000000000000b7599b0615297eec
+Content-Type: text/plain; charset="UTF-8"
+
+
+
+--000000000000b7599b0615297eec
+Content-Type: text/html; charset="UTF-8"
+
+<div dir="ltr"><br></div>
+
+--000000000000b7599b0615297eec--
