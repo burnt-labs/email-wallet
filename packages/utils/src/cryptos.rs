@@ -7,6 +7,7 @@ use rand_core::{OsRng, RngCore};
 pub use zk_regex_apis::padding::{pad_string, pad_string_node};
 
 pub const MAX_EMAIL_ADDR_BYTES: usize = 256;
+pub const MAX_SALT_BYTES: usize = 31;
 
 #[derive(Debug, Clone, Copy)]
 pub struct RelayerRand(pub Fr);
@@ -201,6 +202,22 @@ pub fn email_addr_commit_rand_node(mut cx: FunctionContext) -> JsResult<JsString
     let commit_rand = Fr::random(&mut rng);
     let commit_rand_str = field2hex(&commit_rand);
     Ok(cx.string(commit_rand_str))
+}
+
+pub fn email_salt_addr_commit_node(mut cx: FunctionContext) -> JsResult<JsString> {
+    let email_addr = cx.argument::<JsString>(0)?.value(&mut cx);
+    let email_addr = pad_string(&email_addr, MAX_EMAIL_ADDR_BYTES);
+    let salt = cx.argument::<JsString>(1)?.value(&mut cx);
+    let salt = pad_string(&salt, MAX_SALT_BYTES);
+    let input_bytes = [&salt[..], &email_addr].concat();
+
+    // poseidon bytes hash of salt + email_addr
+    let email_addr_commit = match poseidon_bytes(&input_bytes[..]) {
+        Ok(fr) => fr,
+        Err(e) => return cx.throw_error(&format!("EmailAddrCommit failed: {}", e)),
+    };
+    let email_addr_commit_str = field2hex(&email_addr_commit);
+    Ok(cx.string(email_addr_commit_str))
 }
 
 pub fn email_addr_commit_node(mut cx: FunctionContext) -> JsResult<JsString> {
