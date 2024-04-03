@@ -171,6 +171,18 @@ pub fn pad_email_addr_node(mut cx: FunctionContext) -> JsResult<JsArray> {
     Ok(padded_email_addr_bytes)
 }
 
+pub fn pad_bytes_node(mut cx: FunctionContext) -> JsResult<JsArray> {
+    let bytes_str = cx.argument::<JsString>(0)?.value(&mut cx);
+    let padded_bytes_size = cx.argument::<JsNumber>(1)?.value(&mut cx) as usize;
+    let padded_bytes = pad_string(&bytes_str, padded_bytes_size);
+    let js_padded_bytes = JsArray::new(&mut cx, padded_bytes.len() as u32);
+    for (idx, byte) in padded_bytes.into_iter().enumerate() {
+        let js_byte = cx.number(byte);
+        js_padded_bytes.set(&mut cx, idx as u32, js_byte)?;
+    }
+    Ok(js_padded_bytes)
+}
+
 pub fn email_addr_pointer_node(mut cx: FunctionContext) -> JsResult<JsString> {
     let email_addr = cx.argument::<JsString>(0)?.value(&mut cx);
     let relayer_rand = cx.argument::<JsString>(1)?.value(&mut cx);
