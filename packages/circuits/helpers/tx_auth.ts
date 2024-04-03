@@ -13,6 +13,29 @@ export type TxAuthCircuitInput = {
   in_len_padded_bytes: string;
 };
 
+export async function getEmailSalt(rawEmail: string): Promise<string> {
+  /// the email body format is as follows:
+  /// #tx_data_base64_encoded#email_salt#
+  const emailBody = rawEmail.split("#");
+  return emailBody[2];
+}
+
+export async function getTxData(rawEmail: string): Promise<string> {
+  /// the email body format is as follows:
+  /// #tx_data_base64_encoded#email_salt#
+  const emailBody = rawEmail.split("#");
+  return emailBody[1];
+}
+
+export async function getEmailSender(rawEmail: string): Promise<string> {
+  const selectorBuffer = Buffer.from("from:");
+  let sender_email_idx = Buffer.from(rawEmail).indexOf(selectorBuffer) + selectorBuffer.length;
+  sender_email_idx = Buffer.from(rawEmail).slice(sender_email_idx).indexOf(Buffer.from("<")) + sender_email_idx + 1;
+  const sender_email_end_idx =
+    Buffer.from(rawEmail).slice(sender_email_idx).indexOf(Buffer.from(">")) + sender_email_idx;
+  return rawEmail.slice(sender_email_idx, sender_email_end_idx);
+}
+
 export async function genTxAuthInputs(emailFilePath: string): Promise<TxAuthCircuitInput> {
   const max_message_length = 1024;
   const max_body_length = 2048;
