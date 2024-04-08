@@ -3,7 +3,7 @@ pragma circom 2.1.5;
 include "@zk-email/zk-regex-circom/circuits/regex_helpers.circom";
 
 // regex: #[a-zA-Z0-9/\+=]*#[a-zA-Z0-9/\+=]*#
-template Test(msg_bytes) {
+template TxBodyAndSaltRegex(msg_bytes) {
 	signal input msg[msg_bytes];
 	signal output out;
 
