@@ -17,9 +17,10 @@ describe("Tx Auth", () => {
   const emailFilePath = path.join(__dirname, "./emails/email_tx_test1.eml");
   const rawEmail = readFileSync(emailFilePath, "utf8");
   let circuitInputs: TxAuthCircuitInput;
-
+  let circuit: any;
   beforeAll(async () => {
     circuitInputs = await genTxAuthInputs(emailFilePath);
+    circuit = await wasm_tester(path.join(__dirname, "../src/tx_auth.circom"), option);
   });
 
   it("should have parsed email into circuit inputs", async () => {
@@ -27,7 +28,6 @@ describe("Tx Auth", () => {
   });
 
   it("should verify circuit outputs", async () => {
-    const circuit = await wasm_tester(path.join(__dirname, "../src/tx_auth.circom"), option);
     const witness = await circuit.calculateWitness(stringifyBigInts(circuitInputs));
 
     // check email commitment
