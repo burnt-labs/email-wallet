@@ -8,7 +8,7 @@ pub use zk_regex_apis::padding::{pad_string, pad_string_node};
 
 pub const MAX_EMAIL_ADDR_BYTES: usize = 256;
 pub const MAX_FIELD_BYTES: usize = 31;
-pub const MAX_TX_DATA_BYTES: usize = 1024;
+pub const MAX_TX_DATA_BYTES: usize = 512;
 
 #[derive(Debug, Clone, Copy)]
 pub struct RelayerRand(pub Fr);
