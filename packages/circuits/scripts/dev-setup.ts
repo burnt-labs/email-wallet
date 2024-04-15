@@ -16,10 +16,7 @@ import path from "path";
 import { program } from "commander";
 
 program
-  .requiredOption(
-    "--output <string>",
-    "Path to the directory storing output files"
-  )
+  .requiredOption("--output <string>", "Path to the directory storing output files")
   .option("--silent", "No console logs");
 
 program.parse();
@@ -31,7 +28,6 @@ function log(...message: any) {
   }
 }
 
-
 let { ZKEY_ENTROPY, ZKEY_BEACON } = process.env;
 if (ZKEY_ENTROPY == null) {
   ZKEY_ENTROPY = "dev";
@@ -40,21 +36,16 @@ if (ZKEY_BEACON == null) {
   ZKEY_BEACON = "0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f";
 }
 
-const phase1Url =
-  "https://hermez.s3-eu-west-1.amazonaws.com/powersOfTau28_hez_final_22.ptau";
+const phase1Url = "https://hermez.s3-eu-west-1.amazonaws.com/powersOfTau28_hez_final_22.ptau";
 // const buildDir = path.join(__dirname, "../build");
 // const phase1Path = path.join(buildDir, "powersOfTau28_hez_final_21.ptau");
 // const r1cPath = path.join(buildDir, "wallet.r1cs");
-const solidityTemplate = path.join(
-  require.resolve("snarkjs"),
-  "../../templates/verifier_groth16.sol.ejs"
-);
+const solidityTemplate = path.join(require.resolve("snarkjs"), "../../templates/verifier_groth16.sol.ejs");
 
 // Output paths
 // const zKeyPath = path.join(buildDir, "wallet.zkey");
 // const vKeyPath = path.join(buildDir, "vkey.json");
 // const solidityVerifierPath = path.join(buildDir, "verifier.sol");
-
 
 // async function askBeacon() {
 //   if (!ZKEY_BEACON) {
@@ -91,7 +82,7 @@ async function downloadPhase1(phase1Path: string) {
           });
         })
         .on("error", (err) => {
-          fs.unlink(phase1Path, () => { });
+          fs.unlink(phase1Path, () => {});
           reject(err);
         });
     });
@@ -143,45 +134,93 @@ async function exec() {
   if (!fs.existsSync(accountCreationR1csPath)) {
     throw new Error(`${accountCreationR1csPath} does not exist.`);
   }
-  await generateKeys(phase1Path, accountCreationR1csPath, path.join(buildDir, "account_creation.zkey"), path.join(buildDir, "account_creation.vkey"), path.join(buildDir, "AccountCreationVerifier.sol"));
+  await generateKeys(
+    phase1Path,
+    accountCreationR1csPath,
+    path.join(buildDir, "account_creation.zkey"),
+    path.join(buildDir, "account_creation.vkey"),
+    path.join(buildDir, "AccountCreationVerifier.sol")
+  );
   log("✓ Keys for account creation circuit generated");
 
   const accountInitR1csPath = path.join(buildDir, "account_init/account_init.r1cs");
   if (!fs.existsSync(accountInitR1csPath)) {
     throw new Error(`${accountInitR1csPath} does not exist.`);
   }
-  await generateKeys(phase1Path, accountInitR1csPath, path.join(buildDir, "account_init.zkey"), path.join(buildDir, "account_init.vkey"), path.join(buildDir, "AccountInitVerifier.sol"));
+  await generateKeys(
+    phase1Path,
+    accountInitR1csPath,
+    path.join(buildDir, "account_init.zkey"),
+    path.join(buildDir, "account_init.vkey"),
+    path.join(buildDir, "AccountInitVerifier.sol")
+  );
   log("✓ Keys for account init circuit generated");
 
   const accountTransportR1csPath = path.join(buildDir, "account_transport/account_transport.r1cs");
   if (!fs.existsSync(accountTransportR1csPath)) {
     throw new Error(`${accountTransportR1csPath} does not exist.`);
   }
-  await generateKeys(phase1Path, accountTransportR1csPath, path.join(buildDir, "account_transport.zkey"), path.join(buildDir, "account_transport.vkey"), path.join(buildDir, "AccountTransportVerifier.sol"));
+  await generateKeys(
+    phase1Path,
+    accountTransportR1csPath,
+    path.join(buildDir, "account_transport.zkey"),
+    path.join(buildDir, "account_transport.vkey"),
+    path.join(buildDir, "AccountTransportVerifier.sol")
+  );
   log("✓ Keys for account transport circuit generated");
 
   const claimR1csPath = path.join(buildDir, "claim/claim.r1cs");
   if (!fs.existsSync(claimR1csPath)) {
     throw new Error(`${claimR1csPath} does not exist.`);
   }
-  await generateKeys(phase1Path, claimR1csPath, path.join(buildDir, "claim.zkey"), path.join(buildDir, "claim.vkey"), path.join(buildDir, "ClaimVerifier.sol"));
+  await generateKeys(
+    phase1Path,
+    claimR1csPath,
+    path.join(buildDir, "claim.zkey"),
+    path.join(buildDir, "claim.vkey"),
+    path.join(buildDir, "ClaimVerifier.sol")
+  );
   log("✓ Keys for claim circuit generated");
 
   const emailSenderR1csPath = path.join(buildDir, "email_sender/email_sender.r1cs");
   if (!fs.existsSync(emailSenderR1csPath)) {
     throw new Error(`${emailSenderR1csPath} does not exist.`);
   }
-  await generateKeys(phase1Path, emailSenderR1csPath, path.join(buildDir, "email_sender.zkey"), path.join(buildDir, "email_sender.vkey"), path.join(buildDir, "EmailSenderVerifier.sol"));
+  await generateKeys(
+    phase1Path,
+    emailSenderR1csPath,
+    path.join(buildDir, "email_sender.zkey"),
+    path.join(buildDir, "email_sender.vkey"),
+    path.join(buildDir, "EmailSenderVerifier.sol")
+  );
   log("✓ Keys for email sender circuit generated");
 
   const announcementR1csPath = path.join(buildDir, "announcement/announcement.r1cs");
   if (!fs.existsSync(announcementR1csPath)) {
     throw new Error(`${announcementR1csPath} does not exist.`);
   }
-  await generateKeys(phase1Path, announcementR1csPath, path.join(buildDir, "announcement.zkey"), path.join(buildDir, "announcement.vkey"), path.join(buildDir, "AnnouncementVerifier.sol"));
+  await generateKeys(
+    phase1Path,
+    announcementR1csPath,
+    path.join(buildDir, "announcement.zkey"),
+    path.join(buildDir, "announcement.vkey"),
+    path.join(buildDir, "AnnouncementVerifier.sol")
+  );
   log("✓ Keys for announcement circuit generated");
-}
 
+  const TxAuthR1csPath = path.join(buildDir, "tx_auth/tx_auth.r1cs");
+  if (!fs.existsSync(TxAuthR1csPath)) {
+    throw new Error(`${TxAuthR1csPath} does not exist.`);
+  }
+  await generateKeys(
+    phase1Path,
+    TxAuthR1csPath,
+    path.join(buildDir, "tx_auth.zkey"),
+    path.join(buildDir, "tx_auth.vkey"),
+    path.join(buildDir, "TxAuthVerifier.sol")
+  );
+  log("✓ Keys for tx auth circuit generated");
+}
 
 exec()
   .then(() => {
