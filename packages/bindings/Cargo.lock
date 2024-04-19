@@ -82,6 +82,34 @@ dependencies = [
 ]
 
 [[package]]
+name = "ark-circom"
+version = "0.1.0"
+source = "git+https://github.com/gakonst/ark-circom.git#170b10fc9ed182b5f72ecf379033dda023d0bf07"
+dependencies = [
+ "ark-bn254",
+ "ark-crypto-primitives",
+ "ark-ec",
+ "ark-ff",
+ "ark-groth16",
+ "ark-poly",
+ "ark-relations",
+ "ark-serialize",
+ "ark-std",
+ "byteorder",
+ "cfg-if",
+ "color-eyre",
+ "criterion",
+ "ethers-core",
+ "fnv",
+ "hex",
+ "num",
+ "num-bigint",
+ "num-traits",
+ "thiserror",
+ "wasmer",
+]
+
+[[package]]
 name = "ark-crypto-primitives"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -365,6 +393,7 @@ name = "bindings"
 version = "0.1.0"
 dependencies = [
  "ark-bn254",
+ "ark-circom",
  "ark-crypto-primitives",
  "ark-ec",
  "ark-ff",
@@ -385,6 +414,7 @@ dependencies = [
  "num",
  "num-bigint",
  "num-traits",
+ "serde",
  "serde_json",
  "thiserror",
  "tokio",

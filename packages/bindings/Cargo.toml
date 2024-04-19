@@ -4,6 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+ark-circom = { git = "https://github.com/gakonst/ark-circom.git" }
+
 # WASM operations
 wasmer = { version = "=2.3.0", default-features = false }
 fnv = { version = "=1.0.7", default-features = false }
@@ -35,6 +37,9 @@ color-eyre = "=0.6.2"
 criterion = "=0.3.6"
 
 cfg-if = "=1.0.0"
+
+serde_json = "=1.0.94"
+serde = "*"
 
 [dev-dependencies]
 hex-literal = "=0.2.2"
