@@ -1,3 +1,7 @@
+mod ark_verifier;
+
+use ark_verifier::verify;
+
 fn main() {
-    println!("Hello, world!");
+    verify();
 }
