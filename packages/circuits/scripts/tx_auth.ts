@@ -44,7 +44,7 @@ async function generate() {
     const dir = path.dirname(args.inputFile);
     const { proof, publicSignals } = await snarkjs.groth16.fullProve(
       circuitInputs,
-      path.join(dir, "tx_auth.wasm"),
+      path.join(dir, "tx_auth/tx_auth_js/tx_auth.wasm"),
       path.join(dir, "tx_auth.zkey"),
       console
     );
