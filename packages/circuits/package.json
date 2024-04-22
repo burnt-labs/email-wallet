@@ -27,8 +27,9 @@
     "psi-step1": "npx ts-node scripts/psi_step1.ts",
     "psi-step2": "npx ts-node scripts/psi_step2.ts",
     "psi-step3": "npx ts-node scripts/psi_step3.ts",
-    "tx-auth-full-setup": "yarn build-tx-auth && NODE_OPTIONS=--max_old_space_size=8192 npx ts-node scripts/tx-auth-setup.ts --output ./build && yarn gen-tx-auth-input",
-    "dummy-circuit-full-setup": "yarn build-dummy-circuit && NODE_OPTIONS=--max_old_space_size=8192 npx ts-node scripts/dummy-circuit-setup.ts --output ./build && yarn gen-dummy-circuit-input",
+    "tx-auth-full-setup": "yarn build-tx-auth && NODE_OPTIONS=--max_old_space_size=8192 npx ts-node scripts/tx_auth_setup.ts --output ./build && yarn gen-tx-auth-input --input-file build/tx_auth_inputs.json --email-file ./tests/emails/email_tx_test1.eml --prove",
+    "dummy-circuit-full-setup": "yarn build-dummy-circuit && NODE_OPTIONS=--max_old_space_size=8192 npx ts-node scripts/dummy_circuit_setup.ts --output ./build && yarn gen-dummy-circuit-input --input-file build/dummy_circuit_inputs.json --prove",
+    "tx-setup": "yarn tx-auth-full-setup && yarn dummy-circuit-full-setup",
     "test": "NODE_OPTIONS=--max_old_space_size=8192 jest"
   },
   "dependencies": {

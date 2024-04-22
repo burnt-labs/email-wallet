@@ -65,7 +65,7 @@ const solidityTemplate = path.join(require.resolve("snarkjs"), "../../templates/
 //   }
 // }
 
-async function downloadPhase1(phase1Path: string) {
+export async function downloadPhase1(phase1Path: string) {
   if (!fs.existsSync(phase1Path)) {
     log(`✘ Phase 1 not found at ${phase1Path}`);
     log(`䷢ Downloading Phase 1`);
@@ -94,7 +94,7 @@ export async function generateKeys(
   r1cPath: string,
   zKeyPath: string,
   vKeyPath: string,
-  solidityVerifierPath: string
+  solidityVerifierPath: string,
 ) {
   await zKey.newZKey(r1cPath, phase1Path, zKeyPath + ".step1", console);
   log("✓ Partial ZKey generated");
@@ -139,7 +139,7 @@ async function exec() {
     accountCreationR1csPath,
     path.join(buildDir, "account_creation.zkey"),
     path.join(buildDir, "account_creation.vkey"),
-    path.join(buildDir, "AccountCreationVerifier.sol")
+    path.join(buildDir, "AccountCreationVerifier.sol"),
   );
   log("✓ Keys for account creation circuit generated");
 
@@ -152,7 +152,7 @@ async function exec() {
     accountInitR1csPath,
     path.join(buildDir, "account_init.zkey"),
     path.join(buildDir, "account_init.vkey"),
-    path.join(buildDir, "AccountInitVerifier.sol")
+    path.join(buildDir, "AccountInitVerifier.sol"),
   );
   log("✓ Keys for account init circuit generated");
 
@@ -165,7 +165,7 @@ async function exec() {
     accountTransportR1csPath,
     path.join(buildDir, "account_transport.zkey"),
     path.join(buildDir, "account_transport.vkey"),
-    path.join(buildDir, "AccountTransportVerifier.sol")
+    path.join(buildDir, "AccountTransportVerifier.sol"),
   );
   log("✓ Keys for account transport circuit generated");
 
@@ -178,7 +178,7 @@ async function exec() {
     claimR1csPath,
     path.join(buildDir, "claim.zkey"),
     path.join(buildDir, "claim.vkey"),
-    path.join(buildDir, "ClaimVerifier.sol")
+    path.join(buildDir, "ClaimVerifier.sol"),
   );
   log("✓ Keys for claim circuit generated");
 
@@ -191,7 +191,7 @@ async function exec() {
     emailSenderR1csPath,
     path.join(buildDir, "email_sender.zkey"),
     path.join(buildDir, "email_sender.vkey"),
-    path.join(buildDir, "EmailSenderVerifier.sol")
+    path.join(buildDir, "EmailSenderVerifier.sol"),
   );
   log("✓ Keys for email sender circuit generated");
 
@@ -204,7 +204,7 @@ async function exec() {
     announcementR1csPath,
     path.join(buildDir, "announcement.zkey"),
     path.join(buildDir, "announcement.vkey"),
-    path.join(buildDir, "AnnouncementVerifier.sol")
+    path.join(buildDir, "AnnouncementVerifier.sol"),
   );
   log("✓ Keys for announcement circuit generated");
 }
