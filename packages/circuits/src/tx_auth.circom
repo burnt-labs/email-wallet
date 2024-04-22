@@ -106,7 +106,7 @@ template TransactionAuth(
     (tx_regex_out, email_salt_reveal, tx_body_reveal) <== TxBodyAndSaltRegex(max_tx_data_bytes_no_newlines)(tx_data);
     signal email_salt[salt_max_bytes];
     email_salt <== VarShiftMaskedStr(max_tx_data_bytes_no_newlines, salt_max_bytes)(email_salt_reveal, email_salt_idx);
-    signal output tx_body[tx_body_max_bytes];
+    signal tx_body[tx_body_max_bytes];
     tx_body <== VarShiftMaskedStr(max_tx_data_bytes_no_newlines, tx_body_max_bytes)(tx_body_reveal, tx_body_idx);
 
     // Expose email commitment - hash(email_salt, sender_email_addr)
@@ -119,9 +119,5 @@ template TransactionAuth(
     tx_body_hash <== TxBodyCommit(num_tx_body_ints)(tx_body_ints);
 
 }
-// Args:
-// * n = 121 is the number of bits in each chunk of the modulus (RSA parameter)
-// * k = 17 is the number of chunks in the modulus (RSA parameter)
-// * max_header_bytes = 1024 is the max number of bytes in the header
-// * max_subject_bytes = 512 is the max number of bytes in the body after precomputed slice
+
 component main  = TransactionAuth(121, 17, 1024, 2048, 512, 70, 10);
