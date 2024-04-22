@@ -19,7 +19,6 @@ use ark_groth16::VerifyingKey;
 use ark_serialize::CanonicalDeserialize;
 use ark_serialize::CanonicalSerialize;
 use ark_std::rand::thread_rng;
-use ethers::types::U256;
 use std::fs;
 use std::str::FromStr;
 type GrothBn = Groth16<Bn254, CircomReduction>;
@@ -38,7 +37,6 @@ struct SnarkJsVkey {
     vk_beta_2: [[String; 2]; 3],
     vk_gamma_2: [[String; 2]; 3],
     vk_delta_2: [[String; 2]; 3],
-    vk_alphabeta_12: [[[String; 2]; 3]; 2],
     IC: Vec<[String; 3]>,
 }
 
@@ -123,34 +121,7 @@ impl JsonDecoder for VerifyingKey<Bn254> {
             infinity: false,
         };
 
-        let vk_alphabeta_12 = [
-            [
-                G1Affine {
-                    x: Fp::from_str(snarkjs_vkey.vk_alphabeta_12[0][0][0].as_str()).unwrap(),
-                    y: Fp::from_str(snarkjs_vkey.vk_alphabeta_12[0][0][1].as_str()).unwrap(),
-                    infinity: false,
-                },
-                G1Affine {
-                    x: Fp::from_str(snarkjs_vkey.vk_alphabeta_12[0][1][0].as_str()).unwrap(),
-                    y: Fp::from_str(snarkjs_vkey.vk_alphabeta_12[0][1][1].as_str()).unwrap(),
-                    infinity: false,
-                },
-            ],
-            [
-                G1Affine {
-                    x: Fp::from_str(snarkjs_vkey.vk_alphabeta_12[1][0][0].as_str()).unwrap(),
-                    y: Fp::from_str(snarkjs_vkey.vk_alphabeta_12[1][0][1].as_str()).unwrap(),
-                    infinity: false,
-                },
-                G1Affine {
-                    x: Fp::from_str(snarkjs_vkey.vk_alphabeta_12[1][1][0].as_str()).unwrap(),
-                    y: Fp::from_str(snarkjs_vkey.vk_alphabeta_12[1][1][1].as_str()).unwrap(),
-                    infinity: false,
-                },
-            ],
-        ];
-
-        let IC = snarkjs_vkey
+        let ic = snarkjs_vkey
             .IC
             .iter()
             .map(|ic| G1Affine {
@@ -165,7 +136,7 @@ impl JsonDecoder for VerifyingKey<Bn254> {
             beta_g2: vk_beta_2,
             gamma_g2: vk_gamma_2,
             delta_g2: vk_delta_2,
-            gamma_abc_g1: IC,
+            gamma_abc_g1: ic,
         }
     }
 }
