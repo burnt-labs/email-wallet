@@ -20,9 +20,9 @@ program
   .option("--silent", "No console logs");
 
 program.parse();
-const args = program.opts();
+export const args = program.opts();
 
-function log(...message: any) {
+export function log(...message: any) {
   if (!args.silent) {
     console.log(...message);
   }
@@ -89,7 +89,7 @@ async function downloadPhase1(phase1Path: string) {
   }
 }
 
-async function generateKeys(
+export async function generateKeys(
   phase1Path: string,
   r1cPath: string,
   zKeyPath: string,
@@ -208,48 +208,3 @@ async function exec() {
   );
   log("✓ Keys for announcement circuit generated");
 }
-
-async function setupTxAuthCircuit() {
-  const buildDir = args.output;
-  const TxAuthR1csPath = path.join(buildDir, "tx_auth/tx_auth.r1cs");
-  const phase1Path = path.join(buildDir, "powersOfTau28_hez_final_22.ptau");
-
-  if (!fs.existsSync(TxAuthR1csPath)) {
-    throw new Error(`${TxAuthR1csPath} does not exist.`);
-  }
-  await generateKeys(
-    phase1Path,
-    TxAuthR1csPath,
-    path.join(buildDir, "tx_auth.zkey"),
-    path.join(buildDir, "tx_auth.vkey"),
-    path.join(buildDir, "TxAuthVerifier.sol")
-  );
-  log("✓ Keys for tx auth circuit generated");
-}
-
-async function setupDummyCircuit() {
-  const buildDir = args.output;
-  const phase1Path = path.join(buildDir, "powersOfTau28_hez_final_22.ptau");
-
-  const DummyCircuitR1csPath = path.join(buildDir, "dummy_circuit/dummy_circuit.r1cs");
-  if (!fs.existsSync(DummyCircuitR1csPath)) {
-    throw new Error(`${DummyCircuitR1csPath} does not exist.`);
-  }
-  await generateKeys(
-    phase1Path,
-    DummyCircuitR1csPath,
-    path.join(buildDir, "dummy_circuit.zkey"),
-    path.join(buildDir, "dummy_circuit.vkey"),
-    path.join(buildDir, "dummy_circuit.sol")
-  );
-  log("✓ Keys for tx auth circuit generated");
-}
-
-setupTxAuthCircuit()
-  .then(() => {
-    process.exit(0);
-  })
-  .catch((err) => {
-    console.log("Error: ", err);
-    process.exit(1);
-  });

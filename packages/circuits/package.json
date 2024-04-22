@@ -27,6 +27,8 @@
     "psi-step1": "npx ts-node scripts/psi_step1.ts",
     "psi-step2": "npx ts-node scripts/psi_step2.ts",
     "psi-step3": "npx ts-node scripts/psi_step3.ts",
+    "tx-auth-full-setup": "yarn build-tx-auth && NODE_OPTIONS=--max_old_space_size=8192 npx ts-node scripts/tx-auth-setup.ts --output ./build && yarn gen-tx-auth-input",
+    "dummy-circuit-full-setup": "yarn build-dummy-circuit && NODE_OPTIONS=--max_old_space_size=8192 npx ts-node scripts/dummy-circuit-setup.ts --output ./build && yarn gen-dummy-circuit-input",
     "test": "NODE_OPTIONS=--max_old_space_size=8192 jest"
   },
   "dependencies": {
