@@ -207,8 +207,13 @@ async function exec() {
     path.join(buildDir, "AnnouncementVerifier.sol")
   );
   log("✓ Keys for announcement circuit generated");
+}
 
+async function setupTxAuthCircuit() {
+  const buildDir = args.output;
   const TxAuthR1csPath = path.join(buildDir, "tx_auth/tx_auth.r1cs");
+  const phase1Path = path.join(buildDir, "powersOfTau28_hez_final_22.ptau");
+
   if (!fs.existsSync(TxAuthR1csPath)) {
     throw new Error(`${TxAuthR1csPath} does not exist.`);
   }
@@ -235,12 +240,12 @@ async function setupDummyCircuit() {
     DummyCircuitR1csPath,
     path.join(buildDir, "dummy_circuit.zkey"),
     path.join(buildDir, "dummy_circuit.vkey"),
-    path.join(buildDir, "TxAuthVerifier.sol")
+    path.join(buildDir, "dummy_circuit.sol")
   );
   log("✓ Keys for tx auth circuit generated");
 }
 
-setupDummyCircuit()
+setupTxAuthCircuit()
   .then(() => {
     process.exit(0);
   })
