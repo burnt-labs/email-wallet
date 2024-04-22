@@ -156,14 +156,6 @@ mod tests {
     use super::*;
 
     #[test]
-    fn should_load_vkey() {
-        let vkey: VerifyingKey<Bn254> =
-            VerifyingKey::from_json_file("../circuits/build/tx_auth.vkey");
-
-        println!("{:?}", vkey);
-    }
-
-    #[test]
     fn verify_tx_auth_email_proof() {
         let vkey: VerifyingKey<Bn254> =
             VerifyingKey::from_json_file("../circuits/build/tx_auth.vkey");
@@ -232,90 +224,6 @@ mod tests {
 
         let proof: Proof<Bn<Config>> =
             Proof::<Bn<Config>>::from_json_file("../circuits/build/dummy_circuit_proof.json");
-
-        let public_inputs = vec![MontFp!(
-            "7853200120776062878684798364095072458815029376092732009249414926327459813530"
-        )];
-        let verified = GrothBn::verify(&vk, &public_inputs, &proof).unwrap();
-        assert!(verified);
-    }
-
-    #[test]
-    fn verify_dummy_circuit_with_json_proof() {
-        generate_vkey_file_from_zkey("../circuits/build/dummy_circuit.zkey", "./vk.rvkey");
-
-        // load verifying key from serialized file
-        let vk = VerifyingKey::<Bn254>::deserialize_compressed(fs::File::open("vk.rvkey").unwrap())
-            .unwrap();
-
-        let raw_json_proof = r#"
-        {
-            "pi_a": [
-              "11294412146519031553958436620690294574137338159371573219103612735088119001708",
-              "20689614565817130674840662886116830808078577756379655389251334604863586642302",
-              "1"
-            ],
-            "pi_b": [
-              [
-                "14090670668082506356567908669402633523645960856268292184715574717045134884462",
-                "13809028200529439189692614204327009468201202886018463205507531863944406244886"
-              ],
-              [
-                "14181719871816249308618454510645741605228437105978722289185291359307990899305",
-                "16233906636351095081455735470865489090509958402647188982241771206117696810254"
-              ],
-              [
-                "1",
-                "0"
-              ]
-            ],
-            "pi_c": [
-              "16872813123087290136331401509431187587498872180885111352743022972213042213939",
-              "9029804859183623882677454770271326839865401779895123528544289580745575937268",
-              "1"
-            ],
-            "protocol": "groth16",
-            "curve": "bn128"
-          }"#;
-
-        let proof: Proof<Bn<Config>> = Proof::<Bn<Config>>::from_json(raw_json_proof);
-
-        let public_inputs = vec![MontFp!(
-            "7853200120776062878684798364095072458815029376092732009249414926327459813530"
-        )];
-        let verified = GrothBn::verify(&vk, &public_inputs, &proof).unwrap();
-        assert!(verified);
-    }
-
-    #[test]
-    fn verify_dummy_circuit_with_manual_proof() {
-        generate_vkey_file_from_zkey("../circuits/build/dummy_circuit.zkey", "./vk.rvkey");
-
-        // load verifying key from serialized file
-        let vk = VerifyingKey::<Bn254>::deserialize_compressed(fs::File::open("vk.rvkey").unwrap())
-            .unwrap();
-
-        let proof = Proof::<Bn<Config>> {
-            a: G1Affine {
-                x: MontFp!("11294412146519031553958436620690294574137338159371573219103612735088119001708"),
-                y: MontFp!("20689614565817130674840662886116830808078577756379655389251334604863586642302"),
-                infinity: false,
-            },
-            b: G2Affine {
-                x: Fq2::new(
-                    MontFp!("14090670668082506356567908669402633523645960856268292184715574717045134884462"), 
-                    MontFp!("13809028200529439189692614204327009468201202886018463205507531863944406244886")),
-                y: Fq2::new(
-                    MontFp!("14181719871816249308618454510645741605228437105978722289185291359307990899305"), 
-                    MontFp!("16233906636351095081455735470865489090509958402647188982241771206117696810254")),
-                infinity: false,
-            },
-            c: G1Affine {
-                x: MontFp!("16872813123087290136331401509431187587498872180885111352743022972213042213939"),
-                y: MontFp!("9029804859183623882677454770271326839865401779895123528544289580745575937268"),
-                infinity: false,
-            },
-        };
 
         let public_inputs = vec![MontFp!(
             "7853200120776062878684798364095072458815029376092732009249414926327459813530"
