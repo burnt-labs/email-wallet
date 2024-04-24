@@ -37,34 +37,7 @@ if (ZKEY_BEACON == null) {
 }
 
 const phase1Url = "https://hermez.s3-eu-west-1.amazonaws.com/powersOfTau28_hez_final_22.ptau";
-// const buildDir = path.join(__dirname, "../build");
-// const phase1Path = path.join(buildDir, "powersOfTau28_hez_final_21.ptau");
-// const r1cPath = path.join(buildDir, "wallet.r1cs");
 const solidityTemplate = path.join(require.resolve("snarkjs"), "../../templates/verifier_groth16.sol.ejs");
-
-// Output paths
-// const zKeyPath = path.join(buildDir, "wallet.zkey");
-// const vKeyPath = path.join(buildDir, "vkey.json");
-// const solidityVerifierPath = path.join(buildDir, "verifier.sol");
-
-// async function askBeacon() {
-//   if (!ZKEY_BEACON) {
-//     ZKEY_BEACON = await new Promise((resolve) => {
-//       const readline = require("readline").createInterface({
-//         input: process.stdin,
-//         output: process.stdout,
-//       });
-//       readline.question(
-//         "Enter Beacon (hex string) to apply: ",
-//         (entropy: string) => {
-//           readline.close();
-//           resolve(entropy);
-//         }
-//       );
-//     });
-//   }
-// }
-
 async function downloadPhase1(phase1Path: string) {
   if (!fs.existsSync(phase1Path)) {
     log(`✘ Phase 1 not found at ${phase1Path}`);
