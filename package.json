@@ -2,10 +2,12 @@
   "description": "Circomkit examples",
   "scripts": {
     "start": "npx ts-node ./src/index.ts",
+    "gen-input-tx-auth-header": "npx ts-node ./inputs/tx_auth_header_only/generate.ts",
     "test": "npx mocha"
   },
   "dependencies": {
     "@zk-email/circuits": "^6.0.2",
+    "@zk-email/helpers": "^6.0.2",
     "@zk-email/zk-regex-circom": "^2.0.2",
     "circomkit": "^0.0.22",
     "circomlib": "^2.0.5"
