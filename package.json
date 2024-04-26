@@ -3,6 +3,8 @@
   "scripts": {
     "start": "npx ts-node ./src/index.ts",
     "gen-input-tx-auth-header": "npx ts-node ./inputs/tx_auth_header_only/generate.ts",
+    "setup": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit setup",
+    "vkey": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit vkey",
     "test": "npx mocha"
   },
   "dependencies": {
