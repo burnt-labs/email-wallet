@@ -16,7 +16,7 @@ include "./utils/commit.circom";
 // * txBoydMaxBytes - max number of bytes in the tx body
 template TxAuthHeaderOnly(n, k, maxHeaderBytes, txBoydMaxBytes) {
     signal input emailHeader[maxHeaderBytes];
-    signal input emaiHeaderLength;
+    signal input emailHeaderLength;
     signal input pubkey[k];
     signal input signature[k];
     
@@ -35,7 +35,7 @@ template TxAuthHeaderOnly(n, k, maxHeaderBytes, txBoydMaxBytes) {
     // verify email signature
     component EV = EmailVerifier(maxHeaderBytes, 0, n, k, 1);
     EV.emailHeader <== emailHeader;
-    EV.emailHeaderLength <== emaiHeaderLength;
+    EV.emailHeaderLength <== emailHeaderLength;
     EV.pubkey <== pubkey;
     EV.signature <== signature;
     pubkeyHash <== EV.pubkeyHash;
