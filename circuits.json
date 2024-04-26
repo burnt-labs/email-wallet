@@ -24,7 +24,7 @@
   "tx_auth_header_only": {
     "file": "tx_auth_header_only",
     "template": "TxAuthHeaderOnly",
-    "params": [121, 17, 1024, 2048, 1024]
+    "params": [121, 17, 1024, 1024]
   },
   "fp64": {
     "file": "float_add",
