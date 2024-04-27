@@ -5,20 +5,21 @@
     "gen-input-tx-auth-header": "npx ts-node ./inputs/tx_auth_header_only/generate.ts",
     "setup": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit setup",
     "vkey": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit vkey",
+    "prove": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit prove",
     "test": "npx mocha"
   },
   "dependencies": {
     "@zk-email/circuits": "^6.0.2",
     "@zk-email/helpers": "^6.0.2",
     "@zk-email/zk-regex-circom": "^2.0.2",
-    "circomkit": "^0.0.22",
+    "circomkit": "^0.1.0",
     "circomlib": "^2.0.5"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.1",
-    "@types/node": "^20.3.0",
-    "mocha": "^10.2.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.1.3"
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.12.7",
+    "mocha": "^10.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
   }
 }
