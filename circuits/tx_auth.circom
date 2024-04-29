@@ -13,11 +13,11 @@ include "./tx_auth_core.circom";
 // Verify email from user (sender) and extract subject, timestmap, recipient email (commitment), etc.
 // * n - the number of bits in each chunk of the RSA public key (modulust)
 // * k - the number of chunks in the RSA public key (n * k > 2048)
-// * max_header_bytes - max number of bytes in the email header
-// * max_body_bytes - max number of bytes in the email subject
-// * tx_body_max_bytes - max number of bytes in the tx body
-// * max_tx_data_line_bytes - max number of bytes in the tx data line
-// * max_tx_data_lines - max number of tx data lines
+// * maxHeaderBytes - max number of bytes in the email header
+// * maxBodyBytes - max number of bytes in the email subject
+// * txBodyMaxBytes - max number of bytes in the tx body
+// * maxTxDataLineBytes - max number of bytes in the tx data line
+// * maxTxDataLines - max number of tx data lines
 template TxAuth(
     n, 
     k, 
@@ -37,8 +37,8 @@ template TxAuth(
     // body inputs
     signal input emailBody[maxBodyBytes];
     signal input emailBodyLength;
-    signal input bodyHashIndex;
     signal input precomputedSHA[32];
+    signal input bodyHashIndex;
 
     // idx inputs
     signal input txDataIdx;
