@@ -2,7 +2,7 @@
   "tx_auth_header_only": {
     "file": "tx_auth_header_only",
     "template": "TxAuthHeaderOnly",
-    "params": [121, 17, 1024, 1024]
+    "params": [121, 17, 1024, 512]
   },
   "tx_auth": {
     "file": "tx_auth",
