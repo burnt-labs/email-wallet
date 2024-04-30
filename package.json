@@ -10,11 +10,13 @@
     "test": "npx mocha"
   },
   "dependencies": {
+    "@types/circomlibjs": "^0.1.6",
     "@zk-email/circuits": "^6.0.2",
     "@zk-email/helpers": "^6.0.2",
     "@zk-email/zk-regex-circom": "^2.0.2",
     "circomkit": "^0.1.0",
     "circomlib": "^2.0.5",
+    "circomlibjs": "0.1.2",
     "ts-command-line-args": "^2.5.1"
   },
   "devDependencies": {
