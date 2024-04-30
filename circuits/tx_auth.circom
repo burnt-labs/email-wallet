@@ -38,9 +38,9 @@ template TxAuth(
     signal input emailBody[maxBodyBytes];
     signal input emailBodyLength;
     signal input precomputedSHA[32];
-    signal input bodyHashIndex;
 
     // idx inputs
+    signal input bodyHashIndex;
     signal input txDataIdx;
     signal input txBodyIdx;
     signal input senderEmailIdx;

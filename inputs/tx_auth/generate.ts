@@ -23,14 +23,20 @@ export type TxAuthCircuitInput = {
 export async function getEmailSalt(rawEmail: string): Promise<string> {
   /// the email body format is as follows:
   /// #tx_data_base64_encoded#email_salt#
-  const emailBody = rawEmail.replaceAll("\r\n", "").split("#");
+  const emailBody = rawEmail
+    .replaceAll("\r\n", "")
+    .replaceAll("\n", "")
+    .split("#");
   return emailBody[2];
 }
 
-export async function getTxData(rawEmail: string): Promise<string> {
+export async function getTxBody(rawEmail: string): Promise<string> {
   /// the email body format is as follows:
   /// #tx_data_base64_encoded#email_salt#
-  const emailBody = rawEmail.replaceAll("\r\n", "").split("#");
+  const emailBody = rawEmail
+    .replaceAll("\r\n", "")
+    .replaceAll("\n", "")
+    .split("#");
   return emailBody[1];
 }
 
@@ -48,7 +54,7 @@ export async function getEmailSender(rawEmail: string): Promise<string> {
   return rawEmail.slice(sender_email_idx, sender_email_end_idx);
 }
 
-export async function generate(emailFilePath: string) {
+export async function getInputs(emailFilePath: string) {
   const emailRaw = await promisify(fs.readFile)(emailFilePath, "utf8");
   const emailCircuitInputs = await generateEmailVerifierInputs(emailRaw, {
     ignoreBodyHashCheck: false,
@@ -97,6 +103,12 @@ export async function generate(emailFilePath: string) {
     senderEmailIdx: senderEmailIdx.toString(),
     emailBody: emailCircuitInputs.emailBody,
   };
+
+  return inputs;
+}
+
+export async function generate(emailFilePath: string) {
+  const inputs = await getInputs(emailFilePath);
 
   // write to default.json file
   const outputFilePath = emailFilePath.replace(".eml", ".json");

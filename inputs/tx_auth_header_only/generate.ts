@@ -45,7 +45,6 @@ export async function getEmailSender(rawEmail: string): Promise<string> {
 export async function getInputs(
   emailFilePath: string
 ): Promise<TxAuthCircuitInput> {
-  console.log("emailFilePath", emailFilePath);
   const emailRaw = await promisify(fs.readFile)(emailFilePath, "utf8");
   const emailInputs = await generateEmailVerifierInputs(emailRaw, {
     ignoreBodyHashCheck: true,
