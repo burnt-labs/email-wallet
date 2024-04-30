@@ -9,7 +9,7 @@ import {
 import { promisify } from "util";
 import fs from "fs";
 import { getEmailSalt } from "../inputs/tx_auth/generate";
-import { calculateEmailAddrCommit, calculateTxBodyHash } from "./utils";
+import { calculateEmailAddrCommit, calculateTxBodyHash } from "./common/utils";
 import { assert } from "@zk-email/helpers";
 
 describe("TxAuthBody", function () {
