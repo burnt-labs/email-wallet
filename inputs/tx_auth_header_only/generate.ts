@@ -2,8 +2,6 @@ import fs from "fs";
 import { promisify } from "util";
 import { generateEmailVerifierInputs } from "@zk-email/helpers";
 
-export const SENDER_ADDRESS_MAX_BYTES = 256;
-export const EMAIL_SALT_MAX_BYTES = 31;
 export const EMAIL_HEADER_MAX_BYTES = 1024;
 
 export type TxAuthCircuitInput = {
@@ -23,7 +21,7 @@ export async function getEmailSalt(rawEmail: string): Promise<string> {
   return emailBody[2];
 }
 
-export async function getTxData(rawEmail: string): Promise<string> {
+export async function getTxBody(rawEmail: string): Promise<string> {
   /// the email body format is as follows:
   /// #tx_data_base64_encoded#email_salt#
   const emailBody = rawEmail.split("#");
@@ -44,7 +42,9 @@ export async function getEmailSender(rawEmail: string): Promise<string> {
   return rawEmail.slice(senderEmailIdx, senderEmailEndIdx);
 }
 
-export async function generate(emailFilePath: string) {
+export async function getInputs(
+  emailFilePath: string
+): Promise<TxAuthCircuitInput> {
   console.log("emailFilePath", emailFilePath);
   const emailRaw = await promisify(fs.readFile)(emailFilePath, "utf8");
   const emailInputs = await generateEmailVerifierInputs(emailRaw, {
@@ -77,6 +77,12 @@ export async function generate(emailFilePath: string) {
     emailSaltIdx: emailSaltIdx.toString(),
     senderEmailIdx: senderEmailIdx.toString(),
   };
+
+  return inputs;
+}
+
+export async function generate(emailFilePath: string) {
+  const inputs = await getInputs(emailFilePath);
 
   // write to default.json file
   const outputFilePath = emailFilePath.replace(".eml", ".json");

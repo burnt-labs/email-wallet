@@ -1,0 +1,61 @@
+Authentication-Results: inbound-smtp.skiff.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=D0qlsSOa;
+	spf=pass (inbound-smtp.skiff.com: domain of thezdev1@gmail.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=thezdev1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+X-Spam-Action: no action
+X-Envelope-From: thezdev1@gmail.com
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	by inbound-smtp.skiff.com (Haraka) with ESMTPS id A1B73635-D137-4BCA-98EC-5E3F9FA93DC6.1
+	envelope-from <thezdev1@gmail.com>
+	tls TLS_AES_256_GCM_SHA384;
+	Wed, 03 Apr 2024 04:17:08 +0000
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-513e89d0816so6975660e87.0
+        for <zkemail@thedev.maskmy.id>; Tue, 02 Apr 2024 21:17:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712117824; x=1712722624; darn=thedev.maskmy.id;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=m/jqa+zgMd9hOOMpr60ahQ6WrIsdqwX5stoXGnrKeFU=;
+        b=D0qlsSOanBtLKze61X+XSjdSx+bw52hUe2sMoXhk8ikWvHTppkM3xo20L9YHhvBzE8
+         MyJ/Tm4JM93V/UEaB9JgXQflVU2TqU0jzPJQSGlzUv0RfJsFHWdJej+j9DklNcoCopCd
+         uR/yn4oeHYegqvc+D96FGiHa23YDQMoOQ1TfBNbCvftRX6llKBulf1sgAxIG3gpDUK2o
+         XZRSIFd459ZQLZOID77lqDAEP4Y8Soi2atT6pygJ2EeG4f5w6OzpvHbRLL7fQX1H5O5l
+         UYgAW+x3f3eoRNwLaMj9NyRjpT30NxwqX+Hkm9CBb927LQeU9PDrB+b7TRTgt4ZN3M0T
+         auXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712117824; x=1712722624;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=m/jqa+zgMd9hOOMpr60ahQ6WrIsdqwX5stoXGnrKeFU=;
+        b=Z4FjIQ37l9Hks04nZNd/ZVSS1U8cLYNPDW9h0rlnKYutSzAJkIjLVgCmMEciCjs/kH
+         /NCRdiRDGX+YbifAkqToGgYBj+9kCR/yVFq71C7YGxsMacJVvWM/o1FuadpRBtXNJ/ym
+         UK7vPzfS5Yno652VCskXrUbPFhP+RW4IRJbFzAWBn3gRIYA5VGLxqPxcklGhKh0qy/4Q
+         LZvYXZ4BChVeimvViq6vwjXOwzrxLjyNSKadhzI196Xd6MbtL5UDV5GzrihkQBGgOWTl
+         pC9TTOPtGSTwXUxpy5XvOevETKOnwTh7UaWV4hxjqon02GqSkt6ZT7Um4K5zjjoqOQzC
+         QeBA==
+X-Gm-Message-State: AOJu0YzAAa3BL2PcDWijbY355PkXphshEKgWh5ifbxBWlBPma3MJaYsp
+	fKPr2K0aSq2kCfkTULfN8kJyF55GbyYax6idJXL6Ws54dnb+S/PS4MMwdNjf0XarIDqQyL4Zoo4
+	dzxA6dzpUWcMIM07f0LrFydfdM7kyON/xr/4=
+X-Google-Smtp-Source: AGHT+IGoCLu93BdvAQpMRrQ3aYopgILe7JPxXr93bQd2b11n1tlcsVNixmXYZiWRKQQ1/I4mnf3mxzHAWlwunb7fvuw=
+X-Received: by 2002:ac2:4add:0:b0:513:b023:7608 with SMTP id
+ m29-20020ac24add000000b00513b0237608mr9057983lfp.8.1712117824048; Tue, 02 Apr
+ 2024 21:17:04 -0700 (PDT)
+MIME-Version: 1.0
+From: zdev <thezdev1@gmail.com>
+Date: Wed, 3 Apr 2024 06:16:53 +0200
+Message-ID: <CAPxFdS6gg3cb65uFC3zvXw6dSnLkPkeB+c2Uf+2cAi9YxrDKjg@mail.gmail.com>
+Subject: #CrQBCrEBChwvY29zbW9zLmJhbmsudjFiZXRhMS5Nc2dTZW5kEpABCj94aW9uMWd2cDl5djZndDBwcmdzc3ZueWNudXpnZWszZmtyeGxsZnhxaG0wNzYwMmt4Zmc4dXI2NHNuMnAycDkSP3hpb24xNGNuMG40ZjM4ODJzZ3B2NWQ5ZzA2dzNxN3hzZm51N3B1enltZDk5ZTM3ZHAwemQ4bTZscXpwemwwbRoMCgV1eGlvbhIDMTAwEmEKTQpDCh0vYWJzdHJhY3RhY2NvdW50LnYxLk5pbFB1YktleRIiCiBDAlIzSFvCNEIMmTE+CRm0U2Gb/0mBfb/aeqxkoPweqxIECgIIARh/EhAKCgoFdXhpb24SATAQwJoMGg54aW9uLXRlc3RuZXQtMSCLjAo=#XRhMS5Nc2dTZW5kEpAB#
+To: zkemail@thedev.maskmy.id
+Content-Type: multipart/alternative; boundary="000000000000b7599b0615297eec"
+
+--000000000000b7599b0615297eec
+Content-Type: text/plain; charset="UTF-8"
+
+
+
+--000000000000b7599b0615297eec
+Content-Type: text/html; charset="UTF-8"
+
+<div dir="ltr"><br></div>
+
+--000000000000b7599b0615297eec--

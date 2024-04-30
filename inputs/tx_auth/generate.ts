@@ -2,8 +2,6 @@ import fs from "fs";
 import { promisify } from "util";
 import { generateEmailVerifierInputs } from "@zk-email/helpers";
 
-export const SENDER_ADDRESS_MAX_BYTES = 256;
-export const EMAIL_SALT_MAX_BYTES = 31;
 export const EMAIL_HEADER_MAX_BYTES = 1024;
 export const EMAIL_BODY_MAX_BYTES = 2048;
 
@@ -107,5 +105,3 @@ export async function generate(emailFilePath: string) {
     JSON.stringify(inputs, null, 2)
   );
 }
-
-// generate("inputs/tx_auth/sample.eml").then(console.log);

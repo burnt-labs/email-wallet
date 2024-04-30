@@ -9,12 +9,12 @@ const options = parse<GeneratorOptions>({
   circuit: {
     type: String,
     alias: "c",
-    description: "Path to the circuit folder",
+    description: "Circuit name",
   },
   input: {
     type: String,
     alias: "i",
-    description: "Path to the input file",
+    description: "input file name",
   },
 });
 
