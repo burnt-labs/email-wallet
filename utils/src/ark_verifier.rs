@@ -20,6 +20,7 @@ use std::str::FromStr;
 pub type GrothBn = Groth16<Bn254, CircomReduction>;
 pub type GrothBnProof = Proof<Bn<Config>>;
 pub type GrothBnVkey = VerifyingKey<Bn254>;
+pub type GrothFp = Fp<MontBackend<FrConfig, 4>, 4>;
 
 #[derive(Debug, Deserialize)]
 struct SnarkJsProof {
@@ -39,7 +40,7 @@ struct SnarkJsVkey {
 
 #[derive(Debug)]
 pub struct PublicInputs<const N: usize> {
-    inputs: [Fp<MontBackend<FrConfig, 4>, 4>; N],
+    inputs: [GrothFp; N],
 }
 
 pub trait JsonDecoder {
@@ -146,7 +147,7 @@ impl JsonDecoder for GrothBnVkey {
 impl<const N: usize> JsonDecoder for PublicInputs<N> {
     fn from_json(json: &str) -> Self {
         let inputs: Vec<String> = serde_json::from_str(json).unwrap();
-        let inputs: Vec<Fp<MontBackend<FrConfig, 4>, 4>> = inputs
+        let inputs: Vec<GrothFp> = inputs
             .iter()
             .map(|input| Fp::from_str(input).unwrap())
             .collect();
@@ -158,7 +159,7 @@ impl<const N: usize> JsonDecoder for PublicInputs<N> {
 
 impl<const N: usize> PublicInputs<N> {
     pub fn from(inputs: [&str; N]) -> Self {
-        let inputs: Vec<Fp<MontBackend<FrConfig, 4>, 4>> = inputs
+        let inputs: Vec<GrothFp> = inputs
             .iter()
             .map(|input| Fp::from_str(input).unwrap())
             .collect();
@@ -169,7 +170,7 @@ impl<const N: usize> PublicInputs<N> {
 }
 
 impl<const N: usize> Deref for PublicInputs<N> {
-    type Target = [Fp<MontBackend<FrConfig, 4>, 4>];
+    type Target = [GrothFp];
 
     fn deref(&self) -> &Self::Target {
         &self.inputs

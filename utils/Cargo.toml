@@ -41,6 +41,7 @@ cfg-if = "=1.0.0"
 serde_json = "=1.0.94"
 serde = "*"
 clap = { version = "4.5.4", features = ["derive"] }
+poseidon-ark = {git = "https://github.com/arnaucube/poseidon-ark"}
 
 
 [dev-dependencies]
