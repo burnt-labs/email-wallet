@@ -1,6 +1,0 @@
-flask
-waitress
-gdown
-jsonify
-requests
-modal
