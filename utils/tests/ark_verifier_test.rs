@@ -1,6 +1,7 @@
 #[cfg(test)]
 mod tests {
     use ark_crypto_primitives::snark::SNARK;
+    use ark_serialize::CanonicalSerialize;
     use utils::{
         ark_verifier::{GrothBn, GrothBnProof, GrothBnVkey, JsonDecoder, PublicInputs},
         commit::{calculate_email_commitment, calculate_tx_body_commitment},
@@ -38,6 +39,11 @@ mod tests {
         uZXQtMSCLjAo=";
 
         let vkey = GrothBnVkey::from_json_file(vkey_json_path);
+        let mut vkey_serialized = Vec::new();
+        vkey.serialize_compressed(&mut vkey_serialized).unwrap();
+        println!("vkey serialized len: {:?}", vkey_serialized.len());
+        println!("vkey serialized: {:?}", vkey_serialized);
+        assert!(false);
         let proof = GrothBnProof::from_json_file(proof_json_path);
         let public_inputs: PublicInputs<3> = PublicInputs::from_json_file(public_inputs_json_path);
         let verified = GrothBn::verify(&vkey, &public_inputs, &proof).unwrap();
