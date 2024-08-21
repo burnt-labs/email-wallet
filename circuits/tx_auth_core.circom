@@ -3,6 +3,7 @@ pragma circom 2.1.5;
 include "@zk-email/circuits/utils/constants.circom";
 include "@zk-email/circuits/utils/bytes.circom";
 include "@zk-email/circuits/utils/regex.circom";
+include "@zk-email/circuits/utils/hash.circom";
 include "./utils/commit.circom";
 include "./regexes/tx_body_and_salt.circom";
 
@@ -36,5 +37,5 @@ template TxAuthCore(maxBytes, txBodyMaxBytes) {
 
     // Expose tx body commitment
     signal txBodyInts[numTxBodyInts] <== PackBytes(txBodyMaxBytes)(txBody);
-    txBodyHash <== TxBodyCommit(numTxBodyInts)(txBodyInts);
+    txBodyHash <== PoseidonModular(numTxBodyInts)(txBodyInts);
 }

@@ -7,7 +7,7 @@ include "@zk-email/circuits/utils/bytes.circom";
 include "@zk-email/circuits/utils/regex.circom";
 include "@zk-email/zk-regex-circom/circuits/common/from_addr_regex.circom";
 include "./regexes/tx_data.circom";
-include "./utils/newline.circom";
+include "./utils/remove_newlines.circom";
 include "./tx_auth_core.circom";
 
 // Verify email from user (sender) and extract subject, timestmap, recipient email (commitment), etc.
@@ -54,7 +54,7 @@ template TxAuth(
     var maxTxDataBytesNoNewlines = (maxTxDataLineBytes - 2) * maxTxDataLines; // excluding \r\n
 
     // verify email signature
-    component EV = EmailVerifier(maxHeaderBytes, maxBodyBytes, n, k, 0);
+    component EV = EmailVerifier(maxHeaderBytes, maxBodyBytes, n, k, 0, 0, 0);
     EV.emailHeader <== emailHeader;
     EV.pubkey <== pubkey;
     EV.signature <== signature;

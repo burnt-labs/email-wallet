@@ -12,19 +12,19 @@
   },
   "dependencies": {
     "@types/circomlibjs": "^0.1.6",
-    "@zk-email/circuits": "^6.0.2",
-    "@zk-email/helpers": "^6.0.2",
-    "@zk-email/zk-regex-circom": "^2.0.2",
-    "circomkit": "^0.1.0",
+    "@zk-email/circuits": "^6.1.5",
+    "@zk-email/helpers": "^6.1.5",
+    "@zk-email/zk-regex-circom": "^2.1.0",
+    "circomkit": "^0.2.1",
     "circomlib": "^2.0.5",
-    "circomlibjs": "0.1.2",
+    "circomlibjs": "0.1.7",
     "ts-command-line-args": "^2.5.1"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.6",
-    "@types/node": "^20.12.7",
-    "mocha": "^10.4.0",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^22.4.1",
+    "mocha": "^10.7.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.4"
   }
 }

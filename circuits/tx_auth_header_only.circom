@@ -27,7 +27,7 @@ template TxAuthHeaderOnly(n, k, maxHeaderBytes, txBodyMaxBytes) {
     signal output pubkeyHash;
 
     // verify email signature
-    component EV = EmailVerifier(maxHeaderBytes, 0, n, k, 1);
+    component EV = EmailVerifier(maxHeaderBytes, 0, n, k, 1, 0, 0);
     EV.emailHeader <== emailHeader;
     EV.emailHeaderLength <== emailHeaderLength;
     EV.pubkey <== pubkey;
