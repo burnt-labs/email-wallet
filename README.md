@@ -3,6 +3,11 @@
 
 ## CLI Usage
 
+### Install dependencies
+```sh
+yarn
+```
+
 ### Compile Circuit
 ```sh
 npx circomkit compile <circuit_name>
