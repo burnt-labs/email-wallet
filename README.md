@@ -48,7 +48,7 @@ npx task createFieldSources
 npx task buildProver
 ```
 
-in case you run into any issues building the prover, refer to the [rapidsnark README](https://github.com/iden3/rapidsnark-old/blob/main/README.md) for more information. It is highly likely that you are missing to build tools such as `cmake` or `libgmp`.
+in case you run into any issues building the prover, refer to the [rapidsnark README](https://github.com/iden3/rapidsnark-old/blob/main/README.md) for more information. It is highly likely that you are missing build tools such as `cmake` or `libgmp`.
 
 and then cd back to the main directory and run:
 
