@@ -1,31 +1,7 @@
 {
-  "license": "MIT",
-  "description": "Tx Auth",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
   "scripts": {
-    "start": "npx ts-node ./src/index.ts",
-    "gen": "npx ts-node ./inputs/generator.ts",
-    "compile": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit compile",
-    "setup": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit setup",
-    "vkey": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit vkey",
-    "prove": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit prove",
-    "prove:rapidsnark": "npx ts-node src/prove.ts",
-    "test": "npx mocha"
-  },
-  "dependencies": {
-    "@types/circomlibjs": "^0.1.6",
-    "@zk-email/circuits": "^6.1.5",
-    "@zk-email/helpers": "^6.1.5",
-    "@zk-email/zk-regex-circom": "^2.1.0",
-    "circomkit": "0.0.25",
-    "circomlib": "^2.0.5",
-    "circomlibjs": "0.1.7",
-    "ts-command-line-args": "^2.5.1"
-  },
-  "devDependencies": {
-    "@types/mocha": "^10.0.7",
-    "@types/node": "^22.4.1",
-    "mocha": "^10.7.3",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
+    
   }
 }
