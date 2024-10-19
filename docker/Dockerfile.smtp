@@ -1,0 +1,24 @@
+# Use the official Rust image as the base image
+FROM rust:1.73 AS builder
+
+# Install necessary dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    pkg-config \
+    libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set the working directory in the container
+WORKDIR /usr/src/relayer-smtp
+
+# Clone the repository
+RUN git clone https://github.com/zkfriendly/relayer-smtp.git .
+
+# Build the application
+RUN cargo build --release
+
+# Expose the port the app runs on
+EXPOSE 8080
+
+# update PATH to include the target/release directory
+ENV PATH="/usr/src/relayer-smtp/target/release:${PATH}"
