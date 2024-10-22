@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    // ... your existing compiler options
+  },
+  "include": [
+    "src",
+    "packages/rapidsnark/**/*.d.ts"
+, "packages/circuits/src/prove.d.ts"  ]
+}
