@@ -1,5 +1,5 @@
 import { Circomkit } from 'circomkit';
-import { proveWithRapidsnark } from './rapidsnark';
+import { proveWithRapidsnark } from '../../rapidsnark/prove';
 import path from 'path';
 
 async function main() {
