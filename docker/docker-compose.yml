@@ -21,16 +21,16 @@ services:
       retries: 5
       start_period: 30s
 
-  imap:
-    build:
-      context: .
-      dockerfile: Dockerfile.imap
-    environment:
-      - RELAYER_ENDPOINT=http://relayer:${RELAYER_PORT}/signAndSend
-      - IMAP_LOGIN_ID=${IMAP_LOGIN_ID}
-      - IMAP_LOGIN_PASSWORD=${IMAP_LOGIN_PASSWORD}
-      - IMAP_DOMAIN_NAME=${IMAP_DOMAIN_NAME}
-      - IMAP_PORT=${IMAP_PORT}
-      - AUTH_TYPE=${IMAP_AUTH_TYPE}
-      - JSON_LOGGER=${IMAP_JSON_LOGGER}
-    command: ["relayer-imap"]
+  # imap:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.imap
+  #   environment:
+  #     - RELAYER_ENDPOINT=http://host.docker.internal:${RELAYER_PORT}/prover/signAndSend
+  #     - IMAP_LOGIN_ID=${IMAP_LOGIN_ID}
+  #     - IMAP_LOGIN_PASSWORD=${IMAP_LOGIN_PASSWORD}
+  #     - IMAP_DOMAIN_NAME=${IMAP_DOMAIN_NAME}
+  #     - IMAP_PORT=${IMAP_PORT}
+  #     - AUTH_TYPE=${IMAP_AUTH_TYPE}
+  #     - JSON_LOGGER=${IMAP_JSON_LOGGER}
+  #   command: ["cargo", "run"]

@@ -42,10 +42,9 @@ export async function getEmailSender(rawEmail: string): Promise<string> {
   return rawEmail.slice(senderEmailIdx, senderEmailEndIdx);
 }
 
-export async function getInputs(
-  emailFilePath: string
+export async function getInputsFromRaw(
+  emailRaw: string
 ): Promise<TxAuthCircuitInput> {
-  const emailRaw = await promisify(fs.readFile)(emailFilePath, "utf8");
   const emailInputs = await generateEmailVerifierInputs(emailRaw, {
     ignoreBodyHashCheck: true,
     maxHeadersLength: EMAIL_HEADER_MAX_BYTES,
@@ -78,6 +77,13 @@ export async function getInputs(
   };
 
   return inputs;
+}
+
+export async function getInputs(
+  emailFilePath: string
+): Promise<TxAuthCircuitInput> {
+  const emailRaw = await promisify(fs.readFile)(emailFilePath, "utf8");
+  return getInputsFromRaw(emailRaw);
 }
 
 export async function generate(emailFilePath: string) {

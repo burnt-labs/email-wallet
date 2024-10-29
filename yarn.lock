@@ -4037,6 +4037,13 @@ range-parser@~1.2.1:
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
   integrity sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==
 
+"rapidsnark@workspace:*":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/rapidsnark/-/rapidsnark-0.0.2.tgz#c6fe1a95da17be93b1e9e8ca2ec670f5c5be8e4b"
+  integrity sha512-G4AHohEreHswC2U1fSqkz9PeOk0NfHarRazlO20rIu7muDBZ9m1cpzIV8GbTP8vOHaB7GOnDr0I4f/kQ38d54A==
+  dependencies:
+    node-fetch "^2.6.1"
+
 raw-body@2.5.2:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/raw-body/-/raw-body-2.5.2.tgz#99febd83b90e08975087e8f1f9419a149366b68a"
