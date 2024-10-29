@@ -1,59 +1,30 @@
-# Tx Auth Email Wallet
+# Email Wallet Monorepo
 
+This is a monorepo for the Email Wallet project, which includes several components:
 
-## CLI Usage
+- Circuits
+- Utils
+- Relayer
+- Prover
 
-```sh
-npx circomkit compile <circuit_name>
+## Components
 
-# print circuit info if you want to
-npx circomkit info <circuit_name>
-```
+### Circuits
+Contains the zero-knowledge circuits used in the Email Wallet system.
 
-3. Commence circuit-specific setup. Normally, this requires us to download a Phase-1 PTAU file and provide it's path; however, Circomkit can determine the required PTAU and download it automatically when using `bn128` curve, thanks to [Perpetual Powers of Tau](https://github.com/privacy-scaling-explorations/perpetualpowersoftau). In this case, `sudoku_9x9` circuit has 4617 constraints, so Circomkit will download `powersOfTau28_hez_final_13.ptau` (see [here](https://github.com/iden3/snarkjs#7-prepare-phase-2)).
+### Utils
+Utility functions and helper modules for the project.
 
-```sh
-npx circomkit setup <circuit_name>
+### Relayer
+The relayer component of the Email Wallet system.
 
-# alternative: provide the PTAU yourself
-npx circomkit setup <circuit_name> <path-to-ptau>
-```
+### Prover
+A fast prover implementation for generating zkSNARK proofs.
 
-4. Prepare your input file under `./inputs/<circuit_name>/default.json`.
+## Getting Started
 
-5. We are ready to create a proof!
-
-```sh
-npx circomkit prove <circuit_name> default
-```
-
-6. We can then verify our proof. You can try and modify the public input at `./build/<circuit_name>/default/public.json` and see if the proof verifies or not!
+To build the prover, run the following command:
 
 ```sh
-npx circomkit verify <circuit_name> default
-```
-
-
-## Configuration
-
-Circomkit checks for `circomkit.json` to override it's default configurations. We could for example change the target version, prime field and the proof system by setting `circomkit.json` to be:
-
-```json
-{
-  "version": "2.1.2",
-  "protocol": "plonk",
-  "prime": "bls12381"
-}
-```
-
-## Testing
-
-You can use the following commands to test the circuits:
-
-```sh
-# test everything
-yarn test
-
-# test a specific circuit
-yarn test -g <circuit-name>
+yarn build:prover
 ```

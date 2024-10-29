@@ -1,0 +1,83 @@
+Authentication-Results: inbound-smtp.skiff.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UPml2bVG;
+	spf=pass (inbound-smtp.skiff.com: domain of thezdev1@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=thezdev1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+X-Spam-Action: no action
+X-Envelope-From: thezdev1@gmail.com
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by inbound-smtp.skiff.com (Haraka) with ESMTPS id 0CE4DF2B-D049-4212-A42E-5C2FCCA08E95.1
+	envelope-from <thezdev1@gmail.com>
+	tls TLS_AES_256_GCM_SHA384;
+	Mon, 08 Apr 2024 08:16:09 +0000
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a519e04b142so365146766b.3
+        for <zkemail@thedev.maskmy.id>; Mon, 08 Apr 2024 01:16:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712564165; x=1713168965; darn=thedev.maskmy.id;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OGorY0tPJTGCCMynQWwlvKkzRtTezc6ELpIErDVQB1I=;
+        b=UPml2bVGfPiBCeW3N/gmwo9N1rzXbnCYXQEa6Yy/k/386+zimdv1rl272AFmIMyJI2
+         /ayMesTrDDi3ugeufoWR1CA/Uh8A57qSntkFeIRmrRkpKMX4qIW2snghn92/2RnELVt/
+         gKBe/AJ3mLpGBUxM3Qkwf7WjPq99eqDt8mIxf9+4zXQW5pcaXvJB2BH+CdyrE4ODJuoc
+         R5+kr/qBbNm90K2hwCs/sVdCq0O/s8KDDCRo4Q+OIj0ttxtj/3iAcBE+rnkTDDDwIgxe
+         erUzb6SvASmqUIFgdzwf2rf30n46JJT0TLopgEM1tLw/VlYcdPPrgA/+dx1Eh8nGBG5U
+         Ogtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712564165; x=1713168965;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OGorY0tPJTGCCMynQWwlvKkzRtTezc6ELpIErDVQB1I=;
+        b=Sn9s2r3k6zTYTafJzEKWKXujCu1rsb/3Z69Nps+5a0jeifMDQOTqnqAo3PtoD/pfjw
+         2hPc6XgbsX3tq3SDbWBTUmDyxDnSyOHJhkpTiymHAfTDcN6NlPdR1Vk5i+iotpAkp9Wb
+         GL+8rAVbcQXIItAs5ilHx+9I/jB22+DZy027UweH9IrRztf6T9fm0zLr7/fWEj1AVfFs
+         rwcqJ2oboSqjSGUU4dx34k3yeAJleYo9UIGI0Aiwpkpn+Qq5zS4iA0+N8yEzeqdlqqdr
+         Ip8azhEp+lIdLLdWm/bDdEH9YJWECWUkcmHQno8bPFPh5hF6GT5pNGlFCaApg/ft3exb
+         gH3Q==
+X-Gm-Message-State: AOJu0YxKnkyfXrQABsPBPoITKoU7SuiDmRopb2zPs/iQ2jemOMnKnhKc
+	cq1ISPDj1XTCsmg+UfCYhG7km3FZ405hHcEHb4bGUkd/tK5PhgIbwbHpNqQxptan/wam232Lo1w
+	qNRv/YfhY6CYf63Ykcp9fJuE9J4e35OZ0TaQ=
+X-Google-Smtp-Source: AGHT+IFOu4FD9HW1VvXNHpj1Xk69PKqEgtjoWT9ey52j5ucdQeXjJKo6u/Ojs/X9UaNokYJK2Hd6ZnPgVokYC9n3mc8=
+X-Received: by 2002:a17:907:e86:b0:a51:d204:d6bf with SMTP id
+ ho6-20020a1709070e8600b00a51d204d6bfmr2351980ejc.10.1712564165423; Mon, 08
+ Apr 2024 01:16:05 -0700 (PDT)
+MIME-Version: 1.0
+From: zdev <thezdev1@gmail.com>
+Date: Mon, 8 Apr 2024 10:15:54 +0200
+Message-ID: <CAPxFdS5wrgZPaowdH84r96JbPxAtNuFqDQhiqD-Wpvd565ft+Q@mail.gmail.com>
+Subject: hash
+To: zkemail@thedev.maskmy.id
+Content-Type: multipart/alternative; boundary="000000000000bc395f0615916ad5"
+
+--000000000000bc395f0615916ad5
+Content-Type: text/plain; charset="UTF-8"
+
+$
+#CrQBCrEBChwvY29zbW9zLmJhbmsudjFiZXRhMS5Nc2dTZW5kEpABCj94aW9uMWd2cDl
+5djZndDBwcmdzc3ZueWNudXpnZWszZmtyeGxsZnhxaG0wNzYwMmt4Zmc4dXI2NHNuMnA
+ycDkSP3hpb24xNGNuMG40ZjM4ODJzZ3B2NWQ5ZzA2dzNxN3hzZm51N3B1enltZDk5ZTM
+3ZHAwemQ4bTZscXpwemwwbRoMCgV1eGlvbhIDMTAwEmEKTQpDCh0vYWJzdHJhY3RhY2N
+vdW50LnYxLk5pbFB1YktleRIiCiBDAlIzSFvCNEIMmTE+CRm0U2Gb/0mBfb/aeqxkoPw
+eqxIECgIIARh/EhAKCgoFdXhpb24SATAQwJoMGg54aW9uLXRlc3RuZXQtMSCLjAo=#XR
+hMS5Nc2dTZW5kEpAB#00000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000
+$
+
+--000000000000bc395f0615916ad5
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">$<br>#CrQBCrEBChwvY29zbW9zLmJhbmsudjFiZXRhMS5Nc2dTZW5kEpAB=
+Cj94aW9uMWd2cDl<br>5djZndDBwcmdzc3ZueWNudXpnZWszZmtyeGxsZnhxaG0wNzYwMmt4Zmc=
+4dXI2NHNuMnA<br>ycDkSP3hpb24xNGNuMG40ZjM4ODJzZ3B2NWQ5ZzA2dzNxN3hzZm51N3B1en=
+ltZDk5ZTM<br>3ZHAwemQ4bTZscXpwemwwbRoMCgV1eGlvbhIDMTAwEmEKTQpDCh0vYWJzdHJhY=
+3RhY2N<br>vdW50LnYxLk5pbFB1YktleRIiCiBDAlIzSFvCNEIMmTE+CRm0U2Gb/0mBfb/aeqxk=
+oPw<br>eqxIECgIIARh/EhAKCgoFdXhpb24SATAQwJoMGg54aW9uLXRlc3RuZXQtMSCLjAo=3D#=
+XR<br>hMS5Nc2dTZW5kEpAB#00000000000000000000000000000000000000000000000000<=
+br>00000000000000000000000000000000000000000000000000000000000000000000<br>=
+00000000000000000000000000000000000000000000000000000000000000000000<br>000=
+00000000000000000000000000000000000000000000000000000000000000000<br>$<br><=
+/div>
+
+--000000000000bc395f0615916ad5--
