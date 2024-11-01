@@ -1,0 +1,3 @@
+[submodule "packages/rapidsnark"]
+	path = packages/rapidsnark
+	url = https://github.com/Orbiter-Finance/rapidsnark.git
