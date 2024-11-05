@@ -10,6 +10,11 @@ export class ProverController {
     }
 
     const emailRaw = body.emailRaw;
-    
+
+
+    console.log('Received email raw data:', emailRaw);
+
+    // we need to turn this into an json input for rapidsnark
+
   }
 }
