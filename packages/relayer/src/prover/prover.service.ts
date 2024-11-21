@@ -20,7 +20,7 @@ export class ProverService {
 
     async getInputsFromHeaderOnlyRawEmail(
         emailRaw: string
-    ): Promise<TxAuthCircuitInput> {
+    ): Promise<{ inputs: TxAuthCircuitInput, txBody: string, salt: string }> {
         const emailInputs = await generateEmailVerifierInputs(emailRaw, {
             ignoreBodyHashCheck: true,
             maxHeadersLength: EMAIL_HEADER_MAX_BYTES,
@@ -28,22 +28,19 @@ export class ProverService {
 
         const data = emailInputs.emailHeader!.map((x) => Number(x));
 
-        // get index of all `#` in data
-        const idx = data.reduce((a: number[], e, i) => {
-            if (e === 35) a.push(i);
-            return a;
-        }, []);
+        // get index of all `#` in data using modern array methods
+        const idx = data.flatMap((e, i) => e === 35 ? [i] : []);
 
         const txBodyIdx = idx[0] + 1;
         const emailSaltIdx = idx[1] + 1;
 
         const selectorBuffer = Buffer.from("from:");
-        let senderEmailIdx =
-            Buffer.from(data).indexOf(selectorBuffer) + selectorBuffer.length;
-        senderEmailIdx =
-            Buffer.from(data).slice(senderEmailIdx).indexOf(Buffer.from("<")) +
-            senderEmailIdx +
-            1;
+        const dataBuffer = Buffer.from(data);
+        const fromIndex = dataBuffer.indexOf(selectorBuffer);
+        const startIndex = fromIndex + selectorBuffer.length;
+        const slicedData = dataBuffer.subarray(startIndex);
+        const ltIndex = slicedData.indexOf(Buffer.from("<"));
+        const senderEmailIdx = startIndex + ltIndex + 1;
 
         const inputs: TxAuthCircuitInput = {
             ...emailInputs,
@@ -52,9 +49,15 @@ export class ProverService {
             senderEmailIdx: senderEmailIdx.toString(),
         };
 
-        return inputs;
-    }
+        const txBody = dataBuffer.subarray(txBodyIdx, idx[1]).toString();
+        const salt = dataBuffer.subarray(emailSaltIdx).toString();
 
+        return {
+            inputs,
+            txBody,
+            salt
+        };
+    }
 
     async generateWitness(inputs: TxAuthCircuitInput) {
         const wasmPath = path.join(__dirname, '..', 'circuits', 'tx_auth_header_only', 'tx_auth_header_only.wasm');
@@ -63,7 +66,6 @@ export class ProverService {
             inputs,
             "./data.wtns" // don't save the witness to a file
         );
-
         return witness;
     }
 }
