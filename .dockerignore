@@ -59,3 +59,15 @@ book
 
 # Vs code settings
 .vscode
+
+
+# add git-ignore syntax here of things you don't want copied into docker image
+
+.git
+*Dockerfile*
+*docker-compose*
+node_modules
+.env
+env
+
+tmp
