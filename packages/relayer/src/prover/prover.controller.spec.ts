@@ -22,12 +22,14 @@ describe('ProverController', () => {
 
   it("should receive email raw data", async () => {
     const emailRaw = readFileSync(join(__dirname, '__fixtures__/header_only.eml'), 'utf-8');
-    const expected = readFileSync(join(__dirname, '__fixtures__/outputs/header_only.wtns'), { encoding: 'binary' });
+    const expected = readFileSync(join(__dirname, '__fixtures__/outputs/header_only.wtns'));
     const result = await controller.signAndSendHeaderOnly({ emailRaw });
-    // console.log(expected)
-    // console.log(result)
-    console.log(result.length)
-    console.log(expected.length)
-    expect(result).toEqual(expected);
+
+    expect(Buffer.from(result).length).toEqual(Buffer.from(expected).length);
+    expect(Buffer.from(result).equals(Buffer.from(expected))).toBeTruthy();
+  }, 10000);
+
+  afterAll(async () => {
+    await new Promise(resolve => setTimeout(resolve, 500));
   });
 });
