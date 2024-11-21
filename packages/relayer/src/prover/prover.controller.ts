@@ -11,6 +11,7 @@ export class ProverController {
       throw new Error('Request body must contain emailRaw field');
     }
     const inputs = await this.proverService.getInputsFromHeaderOnlyRawEmail(body.emailRaw);
-    return inputs
+    const witness = await this.proverService.generateWitness(inputs);
+    return witness;
   }
 }

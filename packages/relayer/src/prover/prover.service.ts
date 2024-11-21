@@ -1,17 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { TxAuthCircuitInput } from './circuits/tx_auth_header_only/generate_input';
 import { generateEmailVerifierInputs } from '@zk-email/helpers';
+import * as path from 'path';
+const headerOnlyGenerateWitness = require('../circuits/tx_auth_header_only/generate_witness');
+
+type TxAuthCircuitInput = {
+    emailHeader: string[];
+    emailHeaderLength: string;
+    pubkey: string[];
+    signature: string[];
+    txBodyIdx: string;
+    senderEmailIdx: string;
+    emailSaltIdx: string;
+};
+
+const EMAIL_HEADER_MAX_BYTES = 1024;
 
 @Injectable()
 export class ProverService {
-    EMAIL_HEADER_MAX_BYTES = 1024;
 
     async getInputsFromHeaderOnlyRawEmail(
         emailRaw: string
     ): Promise<TxAuthCircuitInput> {
         const emailInputs = await generateEmailVerifierInputs(emailRaw, {
             ignoreBodyHashCheck: true,
-            maxHeadersLength: this.EMAIL_HEADER_MAX_BYTES,
+            maxHeadersLength: EMAIL_HEADER_MAX_BYTES,
         });
 
         const data = emailInputs.emailHeader!.map((x) => Number(x));
@@ -41,5 +53,17 @@ export class ProverService {
         };
 
         return inputs;
+    }
+
+
+    async generateWitness(inputs: TxAuthCircuitInput) {
+        const wasmPath = path.join(__dirname, '..', 'circuits', 'tx_auth_header_only', 'tx_auth_header_only.wasm');
+        const witness = await headerOnlyGenerateWitness(
+            wasmPath,
+            inputs,
+            "./data.wtns" // don't save the witness to a file
+        );
+
+        return witness;
     }
 }
