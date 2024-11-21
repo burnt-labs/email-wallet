@@ -6,7 +6,7 @@ import { generateEmailVerifierInputs } from '@zk-email/helpers';
 export class ProverService {
     EMAIL_HEADER_MAX_BYTES = 1024;
 
-    async getInputsFromRawEmail(
+    async getInputsFromHeaderOnlyRawEmail(
         emailRaw: string
     ): Promise<TxAuthCircuitInput> {
         const emailInputs = await generateEmailVerifierInputs(emailRaw, {

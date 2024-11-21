@@ -23,7 +23,7 @@ describe('ProverController', () => {
   it("should receive email raw data", async () => {
     const emailRaw = readFileSync(join(__dirname, '__fixtures__/header_only.eml'), 'utf-8');
     const expected = readFileSync(join(__dirname, '__fixtures__/outputs/header_only.json'), 'utf-8');
-    const result = await controller.signAndSend({ emailRaw });
+    const result = await controller.signAndSendHeaderOnly({ emailRaw });
     expect(result).toEqual(JSON.parse(expected));
   });
 });

@@ -5,16 +5,12 @@ import { ProverService } from './prover.service';
 export class ProverController {
   constructor(private readonly proverService: ProverService) { }
 
-  @Post('signAndSend')
-  async signAndSend(@Body() body: { emailRaw: string }) {
+  @Post('signAndSendHeaderOnly')
+  async signAndSendHeaderOnly(@Body() body: { emailRaw: string }) {
     if (!body || !body.emailRaw) {
       throw new Error('Request body must contain emailRaw field');
     }
-
-    const emailRaw = body.emailRaw;
-    // prepare the email raw data for the prover
-    const inputs = await this.proverService.getInputsFromRawEmail(emailRaw);
-
+    const inputs = await this.proverService.getInputsFromHeaderOnlyRawEmail(body.emailRaw);
     return inputs
   }
 }
