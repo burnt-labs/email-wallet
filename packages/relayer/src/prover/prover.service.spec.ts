@@ -27,4 +27,12 @@ describe('ProverService', () => {
     expect(result.salt).toBeDefined();
   });
 
+  it("should generate the correct witness", async () => {
+    const emailRaw = readFileSync(join(__dirname, '__fixtures__/header_only.eml'), 'utf-8');
+    const inputs = await service.generateInputs(emailRaw);
+    const { witness } = await service.generateWitness(inputs.inputs);
+    const expectedWitness = readFileSync(join(__dirname, '__fixtures__/outputs/header_only.wtns'));
+    expect(Buffer.from(witness).equals(expectedWitness)).toBe(true);
+  });
+
 });
