@@ -4,6 +4,7 @@
   },
   "include": [
     "src",
-    "packages/rapidsnark/**/*.d.ts"
-, "packages/circuits/src/prove.d.ts"  ]
+    "packages/rapidsnark/**/*.d.ts",
+    "packages/circuits/src/prove.d.ts"
+  ]
 }
