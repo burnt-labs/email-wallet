@@ -16,18 +16,15 @@ describe('ProverController', () => {
     controller = module.get<ProverController>(ProverController);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
-
-  it("should receive email raw data", async () => {
+  it("should generate proof, public signals, tx body, and salt", async () => {
     const emailRaw = readFileSync(join(__dirname, '__fixtures__/header_only.eml'), 'utf-8');
-    const expected = readFileSync(join(__dirname, '__fixtures__/outputs/header_only.wtns'));
     const result = await controller.signAndSendHeaderOnly({ emailRaw });
 
-    expect(Buffer.from(result).length).toEqual(Buffer.from(expected).length);
-    expect(Buffer.from(result).equals(Buffer.from(expected))).toBeTruthy();
-  }, 10000);
+    expect(result.proof).toBeDefined();
+    expect(result.publicSignals).toBeDefined();
+    expect(result.txBody).toBeDefined();
+    expect(result.salt).toBeDefined();
+  }, 100000);
 
   afterAll(async () => {
     await new Promise(resolve => setTimeout(resolve, 500));

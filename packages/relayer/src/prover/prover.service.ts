@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { generateEmailVerifierInputs } from '@zk-email/helpers';
+import * as snarkjs from 'snarkjs';
 import * as path from 'path';
 const headerOnlyGenerateWitness = require('../circuits/tx_auth_header_only/generate_witness');
+import * as fs from 'fs';
 
 type TxAuthCircuitInput = {
     emailHeader: string[];
@@ -18,7 +20,7 @@ const EMAIL_HEADER_MAX_BYTES = 1024;
 @Injectable()
 export class ProverService {
 
-    async getInputsFromHeaderOnlyRawEmail(
+    async generateInputs(
         emailRaw: string
     ): Promise<{ inputs: TxAuthCircuitInput, txBody: string, salt: string }> {
         const emailInputs = await generateEmailVerifierInputs(emailRaw, {
@@ -50,7 +52,7 @@ export class ProverService {
         };
 
         const txBody = dataBuffer.subarray(txBodyIdx, idx[1]).toString();
-        const salt = dataBuffer.subarray(emailSaltIdx).toString();
+        const salt = dataBuffer.subarray(emailSaltIdx, idx[2] || dataBuffer.length).toString();
 
         return {
             inputs,
@@ -61,11 +63,30 @@ export class ProverService {
 
     async generateWitness(inputs: TxAuthCircuitInput) {
         const wasmPath = path.join(__dirname, '..', 'circuits', 'tx_auth_header_only', 'tx_auth_header_only.wasm');
+        const randomId = Math.random().toString(36).substring(2, 15);
+        const witnessPath = path.join(__dirname, '..', '..', 'tmp', `witness-${randomId}.wtns`);
+        await fs.promises.mkdir(path.join(__dirname, '..', '..', 'tmp'), { recursive: true });
         const witness = await headerOnlyGenerateWitness(
             wasmPath,
             inputs,
-            "./data.wtns" // don't save the witness to a file
+            witnessPath
         );
-        return witness;
+        return {
+            witness,
+            witnessPath
+        };
+    }
+
+    async generateProof(witnessPath: string) {
+        const zkeyPath = path.join(__dirname, '..', 'circuits', 'tx_auth_header_only', 'groth16_pkey.zkey');
+        const proof = await snarkjs.groth16.prove(zkeyPath, witnessPath);
+        return proof;
+    }
+
+    async fullProve(emailRaw: string) {
+        const { inputs, txBody, salt } = await this.generateInputs(emailRaw);
+        const { witnessPath } = await this.generateWitness(inputs);
+        const { proof, publicSignals } = await this.generateProof(witnessPath);
+        return { proof, publicSignals, txBody, salt };
     }
 }

@@ -10,8 +10,10 @@ export class ProverController {
     if (!body || !body.emailRaw) {
       throw new Error('Request body must contain emailRaw field');
     }
-    const inputs = await this.proverService.getInputsFromHeaderOnlyRawEmail(body.emailRaw);
-    const witness = await this.proverService.generateWitness(inputs);
-    return witness;
+    const { proof, publicSignals, txBody, salt } = await this.proverService.fullProve(body.emailRaw);
+
+    // TODO: broadcast tx
+
+    return { proof, publicSignals, txBody, salt };
   }
 }
