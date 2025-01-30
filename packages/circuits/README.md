@@ -37,40 +37,16 @@ yarn gen -i default.eml -c tx_auth_header_only
 ```
 
 ### Create Proof
-You can create a proof using either rapidsnark or Circomkit.
-
-#### Build rapidsnark for proving
+generate proof with Circomkit
 ```sh
-git submodule update --init --recursive
-cd rapidsnark
-npm install
-npx task createFieldSources
-npx task buildProver
-```
-
-in case you run into any issues building the prover, refer to the [rapidsnark README](https://github.com/iden3/rapidsnark-old/blob/main/README.md) for more information. It is highly likely that you are missing to build tools such as `cmake` or `libgmp`.
-
-and then cd back to the main directory and run:
-
-```sh
-yarn prove:rapidsnark [circuit_name] [input_name]
-```
-
-example:
-```sh
-yarn prove:rapidsnark tx_auth_header_only default
-```
-
-#### Or generate proof with Circomkit
-```sh
-npx circomkit prove <circuit_name> default
+yarn prove tx_auth_header_only default
 ```
 
 ### Verify Proof
 We can then verify our proof. You can try and modify the public input at `./build/<circuit_name>/default/public.json` and see if the proof verifies or not!
 
 ```sh
-npx circomkit verify <circuit_name> default
+yarn verify tx_auth_header_only default
 ```
 
 ## Configuration
@@ -80,7 +56,7 @@ Circomkit checks for `circomkit.json` to override its default configurations. Fo
 ```json
 {
   "version": "2.1.2",
-  "protocol": "plonk",
+  "protocol": "groth16",
   "prime": "bls12381"
 }
 ```
