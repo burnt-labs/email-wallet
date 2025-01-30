@@ -10,7 +10,7 @@ yarn
 
 ### Compile Circuit
 ```sh
-npx circomkit compile <circuit_name>
+yarn compile <circuit_name>
 
 # print circuit info if you want to
 npx circomkit info <circuit_name>
@@ -20,7 +20,7 @@ npx circomkit info <circuit_name>
 Commence circuit-specific setup. Circomkit can determine the required PTAU and download it automatically when using `bn128` curve, thanks to [Perpetual Powers of Tau](https://github.com/privacy-scaling-explorations/perpetualpowersoftau).
 
 ```sh
-npx circomkit setup <circuit_name>
+yarn setup <circuit_name>
 
 # alternative: provide the PTAU yourself
 npx circomkit setup <circuit_name> <path-to-ptau>
