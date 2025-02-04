@@ -5,6 +5,7 @@
     "start": "npx ts-node ./src/index.ts",
     "gen": "npx ts-node ./inputs/generator.ts",
     "compile": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit compile",
+    "circuit-info": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit info",
     "setup": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit setup",
     "vkey": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit vkey",
     "prove": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit prove",

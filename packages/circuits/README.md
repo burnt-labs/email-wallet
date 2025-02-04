@@ -13,7 +13,7 @@ yarn
 yarn compile <circuit_name>
 
 # print circuit info if you want to
-npx circomkit info <circuit_name>
+yarn circuit-info <circuit_name>
 ```
 
 ### Circuit Setup
