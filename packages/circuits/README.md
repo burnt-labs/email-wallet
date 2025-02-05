@@ -3,6 +3,14 @@
 
 ## CLI Usage
 
+### Install circom if not installed
+
+```sh
+# https://docs.circom.io/getting-started/installation/
+
+curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
+```
+
 ### Install dependencies
 ```sh
 yarn
