@@ -1,59 +1,51 @@
-# Tx Auth Email Wallet
+# Email Wallet Monorepo
 
+This is a monorepo for the Email Wallet project, which includes several components:
 
-## CLI Usage
+- Circuits
+- Utils
+- Relayer
+- Prover
 
-```sh
-npx circomkit compile <circuit_name>
+## Components
 
-# print circuit info if you want to
-npx circomkit info <circuit_name>
-```
+### Circuits
+Contains the zero-knowledge circuits used in the Email Wallet system.
 
-3. Commence circuit-specific setup. Normally, this requires us to download a Phase-1 PTAU file and provide it's path; however, Circomkit can determine the required PTAU and download it automatically when using `bn128` curve, thanks to [Perpetual Powers of Tau](https://github.com/privacy-scaling-explorations/perpetualpowersoftau). In this case, `sudoku_9x9` circuit has 4617 constraints, so Circomkit will download `powersOfTau28_hez_final_13.ptau` (see [here](https://github.com/iden3/snarkjs#7-prepare-phase-2)).
+### Utils
+Utility functions and helper modules for the project.
 
-```sh
-npx circomkit setup <circuit_name>
+### Relayer
+The relayer component of the Email Wallet system.
 
-# alternative: provide the PTAU yourself
-npx circomkit setup <circuit_name> <path-to-ptau>
-```
+### Prover
+A fast prover implementation for generating zkSNARK proofs.
 
-4. Prepare your input file under `./inputs/<circuit_name>/default.json`.
+## Getting Started
 
-5. We are ready to create a proof!
-
-```sh
-npx circomkit prove <circuit_name> default
-```
-
-6. We can then verify our proof. You can try and modify the public input at `./build/<circuit_name>/default/public.json` and see if the proof verifies or not!
+To build the prover, run the following command:
 
 ```sh
-npx circomkit verify <circuit_name> default
+yarn build:prover
 ```
 
 
-## Configuration
+## Building rapidsnark with GPU support
 
-Circomkit checks for `circomkit.json` to override it's default configurations. We could for example change the target version, prime field and the proof system by setting `circomkit.json` to be:
+You'll need NVIDIA GPU drivers and CUDA toolkit installed. Following is for debian based systems. 
 
-```json
-{
-  "version": "2.1.2",
-  "protocol": "plonk",
-  "prime": "bls12381"
-}
-```
-
-## Testing
-
-You can use the following commands to test the circuits:
+Note: docekr desktop on Linux and Mac does not support GPU passthrough. You'll need to use docker engine on Linux for GPU passthrough.
 
 ```sh
-# test everything
-yarn test
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
 
-# test a specific circuit
-yarn test -g <circuit-name>
+curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+  sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+  sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+```
+
+
+```
+prover_cuda tx_auth/groth16_pkey.zkey tx_auth/default/witness.wtns tx_auth/gproof.json tx_auth/gpublic.json
+prover_cuda tx_auth_header_only/groth16_pkey.zkey tx_auth_header_only/default/witness.wtns tx_auth_header_only/gproof.json tx_auth_header_only/gpublic.json
 ```

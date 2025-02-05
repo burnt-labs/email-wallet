@@ -11,10 +11,12 @@ typechain-types
 packages/circuits/build
 packages/circuits/inputs
 packages/circuits/*.ptau
+packages/circuits/**/*.ptau
 *.r1cs
 *.sym
 *.wasm
 *.c
+
 
 # Contracts
 packages/contracts/broadcast
@@ -59,3 +61,15 @@ book
 
 # Vs code settings
 .vscode
+
+
+# add git-ignore syntax here of things you don't want copied into docker image
+
+.git
+*Dockerfile*
+*docker-compose*
+node_modules
+.env
+env
+
+tmp

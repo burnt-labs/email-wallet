@@ -1,3 +1,4 @@
+node_modules
 # Logs
 logs
 *.log
@@ -38,7 +39,6 @@ bower_components
 build/Release
 
 # Dependency directories
-node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
@@ -52,12 +52,6 @@ typings/
 
 # Optional eslint cache
 .eslintcache
-
-# Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
 
 # Optional REPL history
 .node_repl_history
@@ -75,18 +69,11 @@ typings/
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 
-# Next.js build output
+# next.js build output
 .next
 
-# Nuxt.js build / generate output
+# nuxt.js build output
 .nuxt
-dist
-
-# Gatsby files
-.cache/
-# Comment in the public line in if your project uses Gatsby and *not* Next.js
-# https://nextjs.org/blog/next-9-1#public-directory-support
-# public
 
 # vuepress build output
 .vuepress/dist
@@ -103,24 +90,15 @@ dist
 # TernJS port file
 .tern-port
 
-# builds
-build
-dist
+# Build directories
+dist/
+build/
 
-# circuit-specific powers of tau are ignored
-*.ptau 
-# universal ptaus not ignored
-!ptau/*
-# temporary ptaus are ignored
-tmp.ptau
-
-# is this still a thing lol
-.DS_Store
-
-# ignore auto generated test circuits
-circuits/test
-ptau
-
-# ide
+# Editor directories and files
 .idea
 .vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

@@ -1,0 +1,33 @@
+{
+  "license": "MIT",
+  "description": "Tx Auth",
+  "scripts": {
+    "start": "npx ts-node ./src/index.ts",
+    "gen": "npx ts-node ./inputs/generator.ts",
+    "compile": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit compile",
+    "circuit-info": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit info",
+    "setup": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit setup",
+    "vkey": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit vkey",
+    "prove": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit prove",
+    "verify": "NODE_OPTIONS=--max_old_space_size=8192 npx circomkit verify",
+    "test": "npx mocha"
+  },
+  "dependencies": {
+    "@types/circomlibjs": "^0.1.6",
+    "@zk-email/circuits": "^6.1.5",
+    "@zk-email/helpers": "^6.1.5",
+    "@zk-email/zk-regex-circom": "^2.1.0",
+    "circomkit": "0.0.25",
+    "circomlib": "^2.0.5",
+    "circomlibjs": "0.1.7",
+    "ts-command-line-args": "^2.5.1"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^22.4.1",
+    "mocha": "^10.7.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+}
